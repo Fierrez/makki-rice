@@ -1,0 +1,88 @@
+// =============================================================================
+// variables.scss — Design System Tokens
+// =============================================================================
+// Catppuccin Mocha base palette
+// =============================================================================
+
+// ─── Catppuccin Mocha Palette ─────────────────────────────────────────────────
+$rosewater:   #f5e0dc;
+$flamingo:    #f2cdcd;
+$pink:        #f5c2e7;
+$mauve:       #cba6f7;
+$red:         #f38ba8;
+$maroon:      #eba0ac;
+$peach:       #fab387;
+$yellow:      #f9e2af;
+$green:       #a6e3a1;
+$teal:        #94e2d5;
+$sky:         #89dceb;
+$sapphire:    #74c7ec;
+$blue:        #89b4fa;
+$lavender:    #b4befe;
+$text:        #cdd6f4;
+$subtext1:    #bac2de;
+$subtext0:    #a6adc8;
+$overlay2:    #9399b2;
+$overlay1:    #7f849c;
+$overlay0:    #6c7086;
+$surface2:    #585b70;
+$surface1:    #45475a;
+$surface0:    #313244;
+$base:        #1e1e2e;
+$mantle:      #181825;
+$crust:       #11111b;
+
+// ─── Semantic Tokens ─────────────────────────────────────────────────────────
+$bg-primary:    $base;
+$bg-secondary:  $mantle;
+$bg-surface:    $surface0;
+$bg-overlay:    rgba($surface0, 0.85);
+
+$accent-primary:   $blue;
+$accent-secondary: $mauve;
+$accent-tertiary:  $green;
+
+$text-primary:   $text;
+$text-secondary: $subtext1;
+$text-muted:     $overlay2;
+
+$border-color:   rgba($surface2, 0.6);
+$shadow-color:   rgba($crust, 0.7);
+
+// ─── Spacing ─────────────────────────────────────────────────────────────────
+$space-xs:  4px;
+$space-sm:  8px;
+$space-md:  12px;
+$space-lg:  16px;
+$space-xl:  24px;
+$space-2xl: 32px;
+
+// ─── Border Radius ────────────────────────────────────────────────────────────
+$radius-sm:   6px;
+$radius-md:   10px;
+$radius-lg:   14px;
+$radius-xl:   20px;
+$radius-pill: 100px;
+
+// ─── Typography ───────────────────────────────────────────────────────────────
+$font-ui:   "JetBrains Mono Nerd Font", "Noto Sans", sans-serif;
+$font-mono: "JetBrains Mono Nerd Font", monospace;
+$font-size-sm:   12px;
+$font-size-base: 14px;
+$font-size-lg:   16px;
+$font-size-xl:   20px;
+$font-size-2xl:  28px;
+
+// ─── Animation ────────────────────────────────────────────────────────────────
+$transition-fast:   150ms ease;
+$transition-normal: 250ms ease;
+$transition-slow:   400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// ─── Blur ─────────────────────────────────────────────────────────────────────
+$blur-amount: 20px;
+
+// ─── Z-Layers ─────────────────────────────────────────────────────────────────
+$z-base:    0;
+$z-float:   10;
+$z-overlay: 100;
+$z-top:     1000;

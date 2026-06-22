@@ -1,0 +1,344 @@
+// =============================================================================
+// main.scss — AGS Global Styles
+// =============================================================================
+
+@import "variables";
+
+// ─── Reset ───────────────────────────────────────────────────────────────────
+* {
+    all: unset;
+    box-sizing: border-box;
+    font-family: $font-ui;
+    font-size: $font-size-base;
+    color: $text-primary;
+}
+
+// ─── Window Reset ────────────────────────────────────────────────────────────
+window {
+    background: transparent;
+}
+
+// =============================================================================
+// DYNAMIC ISLAND
+// =============================================================================
+
+.island-window {
+    background: transparent;
+}
+
+.island {
+    background: rgba($mantle, 0.88);
+    border: 1px solid $border-color;
+    border-radius: $radius-pill;
+    padding: $space-sm $space-lg;
+    min-width: 200px;
+    min-height: 38px;
+    box-shadow: 0 8px 32px $shadow-color, 0 0 0 1px rgba($blue, 0.08);
+    transition: all $transition-slow;
+
+    &.expanded {
+        min-width: 420px;
+        border-radius: $radius-xl;
+        padding: $space-md $space-xl;
+        background: rgba($mantle, 0.94);
+    }
+}
+
+.island-idle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-lg;
+}
+
+.island-clock {
+    font-size: $font-size-base;
+    font-weight: bold;
+    color: $text-primary;
+    letter-spacing: 0.5px;
+}
+
+// Workspace pills
+.workspace-pills {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.workspace-pill {
+    width: 8px;
+    height: 8px;
+    border-radius: $radius-pill;
+    background: $surface2;
+    transition: all $transition-normal;
+
+    &.active {
+        width: 20px;
+        background: linear-gradient(90deg, $blue, $mauve);
+    }
+
+    &.occupied {
+        background: $overlay1;
+    }
+
+    &.empty {
+        opacity: 0.35;
+    }
+}
+
+// Volume expanded
+.island-expanded {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+
+    &.volume {
+        .island-icon { color: $blue; }
+    }
+}
+
+.island-slider {
+    trough {
+        background: $surface1;
+        border-radius: $radius-pill;
+        min-height: 4px;
+    }
+
+    highlight {
+        background: linear-gradient(90deg, $blue, $mauve);
+        border-radius: $radius-pill;
+    }
+
+    slider {
+        background: $text;
+        border-radius: $radius-pill;
+        min-width: 14px;
+        min-height: 14px;
+        box-shadow: 0 2px 8px $shadow-color;
+    }
+}
+
+.island-percent {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    min-width: 36px;
+    text-align: right;
+}
+
+// =============================================================================
+// DOCK
+// =============================================================================
+
+.dock-window {
+    background: transparent;
+}
+
+.dock {
+    background: rgba($mantle, 0.85);
+    border: 1px solid $border-color;
+    border-radius: $radius-xl;
+    padding: $space-sm $space-lg;
+    box-shadow: 0 8px 40px $shadow-color, 0 0 0 1px rgba($blue, 0.06);
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+}
+
+.dock-item {
+    background: transparent;
+    border-radius: $radius-md;
+    padding: $space-sm;
+    transition: all $transition-normal;
+    cursor: pointer;
+
+    image {
+        -gtk-icon-size: 32px;
+    }
+
+    &:hover,
+    &.hovered {
+        background: rgba($surface1, 0.8);
+        transform: translateY(-4px) scale(1.12);
+        box-shadow: 0 8px 24px rgba($blue, 0.2);
+    }
+
+    &:active {
+        transform: translateY(-1px) scale(1.05);
+    }
+}
+
+.dock-separator {
+    width: 1px;
+    min-height: 28px;
+    background: $border-color;
+    margin: 0 $space-xs;
+}
+
+// =============================================================================
+// NOTIFICATIONS
+// =============================================================================
+
+.notifications-window {
+    background: transparent;
+}
+
+.notifications-list {
+    gap: $space-sm;
+    display: flex;
+    flex-direction: column;
+}
+
+.notification {
+    background: rgba($mantle, 0.92);
+    border: 1px solid $border-color;
+    border-radius: $radius-lg;
+    padding: $space-md $space-lg;
+    min-width: 360px;
+    max-width: 420px;
+    box-shadow: 0 8px 32px $shadow-color;
+    display: flex;
+    align-items: flex-start;
+    gap: $space-md;
+
+    &.critical {
+        border-color: rgba($red, 0.6);
+        box-shadow: 0 8px 32px rgba($red, 0.2), 0 0 0 1px rgba($red, 0.1);
+    }
+
+    &.low {
+        opacity: 0.9;
+    }
+}
+
+.notification-icon-box {
+    padding-top: 2px;
+}
+
+.notification-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.notification-title {
+    font-weight: bold;
+    font-size: $font-size-base;
+    color: $text-primary;
+}
+
+.notification-body {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    line-height: 1.4;
+}
+
+.notification-close {
+    background: transparent;
+    border-radius: $radius-sm;
+    padding: $space-xs;
+    color: $text-muted;
+    margin-left: auto;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+        background: rgba($surface1, 0.8);
+        color: $text-primary;
+    }
+}
+
+// =============================================================================
+// LAUNCHER
+// =============================================================================
+
+.launcher-window {
+    background: transparent;
+}
+
+.launcher {
+    background: rgba($mantle, 0.94);
+    border: 1px solid $border-color;
+    border-radius: $radius-xl;
+    padding: $space-md;
+    min-width: 480px;
+    box-shadow: 0 24px 64px $shadow-color;
+    gap: $space-sm;
+    display: flex;
+    flex-direction: column;
+}
+
+.launcher-entry {
+    background: rgba($surface0, 0.6);
+    border: 1px solid $border-color;
+    border-radius: $radius-lg;
+    padding: $space-md $space-lg;
+    font-size: $font-size-lg;
+    color: $text-primary;
+    caret-color: $blue;
+
+    &:focus {
+        border-color: rgba($blue, 0.5);
+        box-shadow: 0 0 0 2px rgba($blue, 0.12);
+    }
+}
+
+.launcher-results {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-height: 380px;
+}
+
+.launcher-item {
+    background: transparent;
+    border-radius: $radius-md;
+    padding: $space-sm $space-md;
+    cursor: pointer;
+    transition: all $transition-fast;
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+
+    &:hover {
+        background: rgba($surface0, 0.8);
+    }
+
+    &:active {
+        background: rgba($surface1, 0.9);
+    }
+}
+
+.launcher-item-icon {
+    -gtk-icon-size: 24px;
+}
+
+.launcher-item-label {
+    font-size: $font-size-base;
+    color: $text-primary;
+}
+
+// =============================================================================
+// CLOCK WIDGET (standalone)
+// =============================================================================
+
+.clock-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.clock-time {
+    font-size: $font-size-2xl;
+    font-weight: bold;
+    color: $text-primary;
+    letter-spacing: 2px;
+    font-family: $font-mono;
+}
+
+.clock-date {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}

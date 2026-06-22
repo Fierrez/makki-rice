@@ -1,0 +1,47 @@
+# =============================================================================
+# .gitignore — makki-rice
+# =============================================================================
+
+# Logs
+tools/logs/
+*.log
+*.log.*
+
+# Backups created by install/uninstall
+*.bak
+*.bak.*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Wallpapers (too large for git — use git-lfs or manual download)
+assets/wallpapers/*.jpg
+assets/wallpapers/*.jpeg
+assets/wallpapers/*.png
+assets/wallpapers/*.webp
+!assets/wallpapers/.gitkeep
+
+# Fonts (binary)
+assets/fonts/*.ttf
+assets/fonts/*.otf
+!assets/fonts/.gitkeep
+
+# Generated CSS from SCSS
+ui-engine/ags/style/main.css
+
+# Node / npm (if tools are JS-based)
+node_modules/
+.npm/
+
+# Shell history
+.bash_history
+.zsh_history

@@ -1,0 +1,19 @@
+[Unit]
+Description=Makki Rice — Hyprland Event Router
+Documentation=https://github.com/yourusername/makki-rice
+After=graphical-session.target hyprland-session.target
+Wants=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.config/makki-rice/services/hyprland/event-router.sh
+Restart=on-failure
+RestartSec=3s
+StandardOutput=journal
+StandardError=journal
+
+# Environment
+Environment=XDG_RUNTIME_DIR=/run/user/%U
+
+[Install]
+WantedBy=graphical-session.target
