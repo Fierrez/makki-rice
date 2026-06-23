@@ -60,7 +60,7 @@ makki-rice/
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/makki-rice ~/.config/makki-rice
+git clone https://github.com/Fierrez/makki-rice ~/.config/makki-rice
 
 # Run the bootstrap installer
 cd ~/.config/makki-rice

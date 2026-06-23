@@ -6,7 +6,7 @@
 // Blur overlay + keyboard navigation.
 // =============================================================================
 
-import { Widget, Utils, App } from "resource:///com/github/Aylur/ags/imports.js";
+import { Widget, Utils, App, Variable } from "resource:///com/github/Aylur/ags/imports.js";
 
 const { Box, Button, Label, Window, Revealer, Icon, EventBox } = Widget;
 const { execAsync } = Utils;

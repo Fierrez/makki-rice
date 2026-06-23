@@ -101,6 +101,39 @@ else
     warn "HYPRLAND_INSTANCE_SIGNATURE not set — Hyprland may not be running"
 fi
 
+# ─── Hyprland Config Errors ───────────────────────────────────────────────────
+section "Hyprland Config Errors"
+if command -v hyprctl &>/dev/null; then
+    errors=$(hyprctl -j configerrors 2>/dev/null)
+    has_json=false
+    if [[ $? -eq 0 && -n "$errors" ]]; then
+        has_json=true
+    fi
+
+    if [[ "$has_json" == "true" ]]; then
+        if command -v jq &>/dev/null; then
+            count=$(echo "$errors" | jq 'length' 2>/dev/null || echo 0)
+        else
+            count=$(echo "$errors" | grep -c '"error"' || echo 0)
+        fi
+    else
+        raw_errors=$(hyprctl configerrors 2>/dev/null)
+        if [[ "$raw_errors" == "no errors found" || -z "$raw_errors" ]]; then
+            count=0
+        else
+            count=$(echo "$raw_errors" | grep -c '^' || echo 0)
+        fi
+    fi
+
+    if (( count > 0 )); then
+        warn "$count configuration error(s) detected. Check: ~/.local/share/makki-rice/logs/hyprland-config-errors.log"
+    else
+        pass "No configuration errors detected"
+    fi
+else
+    warn "hyprctl not found — cannot check config errors"
+fi
+
 # ─── Services ────────────────────────────────────────────────────────────────
 section "Systemd User Services"
 check_service "hypr-rice.service"

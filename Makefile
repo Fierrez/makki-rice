@@ -18,7 +18,7 @@ RICE_DIR   := $(shell pwd)
 THEME      ?= mocha
 
 .PHONY: css watch theme health log reload ags-restart install dry-run \
-        clean lint stats help
+        clean lint stats help config-check
 
 # ─── Default ──────────────────────────────────────────────────────────────────
 help:
@@ -29,6 +29,7 @@ help:
 	@echo "  make watch           Watch SCSS, auto-rebuild"
 	@echo "  make theme THEME=X   Switch theme (mocha|latte|frappe|macchiato)"
 	@echo "  make health          Run health check"
+	@echo "  make config-check    Check for Hyprland configuration errors"
 	@echo "  make log             Tail event router log (live)"
 	@echo "  make stats           Event frequency stats"
 	@echo "  make reload          Reload Hyprland config"
@@ -61,6 +62,9 @@ stats:
 # ─── Hyprland ─────────────────────────────────────────────────────────────────
 reload:
 	@bash scripts/hypr/reload.sh
+
+config-check:
+	@bash scripts/hypr/config-check.sh
 
 ags-restart:
 	@pkill -x ags 2>/dev/null || true

@@ -270,6 +270,8 @@ on_config_reloaded() {
     log_event "configreloaded"
     rate_limit "config_reload" 3 || return 0
     notify "low" "Hyprland" "Config reloaded."
+    # Run the config check script to check for newly introduced errors
+    bash "$RICE_DIR/scripts/hypr/config-check.sh" &
     # Reload AGS CSS
     ags_signal "App.resetCss?.(); App.applyCss?.(App.configDir + '/style/main.css')"
 }

@@ -10,7 +10,7 @@
 //   - Right-click context menu stub
 // =============================================================================
 
-import { Widget, Utils, App } from "resource:///com/github/Aylur/ags/imports.js";
+import { Widget, Utils, App, Variable } from "resource:///com/github/Aylur/ags/imports.js";
 import Hyprland from "resource:///com/github/Aylur/ags/service/hyprland.js";
 
 const { Box, Button, Icon, Window, Revealer, Label, EventBox } = Widget;

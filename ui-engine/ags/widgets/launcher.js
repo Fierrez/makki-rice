@@ -4,7 +4,7 @@
 // Triggered via keybind. Shows app search with fuzzy matching.
 // =============================================================================
 
-import { Widget, Utils, App, Service } from "resource:///com/github/Aylur/ags/imports.js";
+import { Widget, Utils, App, Service, Variable } from "resource:///com/github/Aylur/ags/imports.js";
 
 const { Box, Entry, Label, Button, Window, Scrollable, Icon } = Widget;
 

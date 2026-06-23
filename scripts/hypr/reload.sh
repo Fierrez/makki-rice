@@ -20,6 +20,10 @@ fi
 info "Reloading Hyprland config..."
 hyprctl reload && info "Hyprland config reloaded." || warn "Hyprland reload failed"
 
+# Check for configuration errors immediately
+RICE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+bash "$RICE_DIR/scripts/hypr/config-check.sh" || true
+
 for arg in "$@"; do
     case "$arg" in
         --ags)

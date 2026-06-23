@@ -15,7 +15,14 @@ set -uo pipefail
 RICE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_DIR="$RICE_DIR/tools/logs"
 LOG_FILE="$LOG_DIR/bootstrap.log"
+TERMINAL_LOG="$LOG_DIR/bootstrap-terminal.log"
 mkdir -p "$LOG_DIR"
+
+# Redirect stdout and stderr to both the terminal and bootstrap-terminal.log (with ANSI colors stripped)
+if command -v tee &>/dev/null && command -v sed &>/dev/null; then
+    > "$TERMINAL_LOG"
+    exec > >(tee -i >(sed -E $'s/\e\\[[0-9;]*[a-zA-Z]//g' >> "$TERMINAL_LOG")) 2>&1
+fi
 
 # ─── Flags ───────────────────────────────────────────────────────────────────
 DRY_RUN=false
@@ -150,10 +157,15 @@ main() {
         log WARN "sass not found — skipping CSS compile. Run: bash tools/dev/build-css.sh"
     fi
 
-    # ── Optional health check ──────────────────────────────────────────
-    if [[ "$RUN_HEALTH" == "true" && "$DRY_RUN" != "true" ]]; then
-        log STEP "Running health check..."
-        bash "$RICE_DIR/tools/debug/health-check.sh" || true
+    # ── Health check & file logging ────────────────────────────────────
+    if [[ "$DRY_RUN" != "true" ]]; then
+        if [[ "$RUN_HEALTH" == "true" ]]; then
+            log STEP "Running health check..."
+            bash "$RICE_DIR/tools/debug/health-check.sh" || true
+        fi
+        # Always save a clean health check report of all files/services
+        bash "$RICE_DIR/tools/debug/health-check.sh" | sed -E $'s/\e\\[[0-9;]*[a-zA-Z]//g' > "$LOG_DIR/health-check.log" 2>&1 || true
+        log INFO "Health check logged to: $LOG_DIR/health-check.log"
     fi
 
     echo ""
