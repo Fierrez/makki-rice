@@ -21,8 +21,13 @@ safe_link() {
     if [[ -L "$dst" ]]; then
         rm "$dst"
     elif [[ -e "$dst" ]]; then
-        warn "Backing up: $dst → $dst.bak.$(date +%s)"
-        mv "$dst" "$dst.bak.$(date +%s)"
+        if [[ "${FORCE_OVERWRITE:-false}" == "true" ]]; then
+            info "Overwriting: $dst"
+            rm -rf "$dst"
+        else
+            warn "Backing up: $dst → $dst.bak.$(date +%s)"
+            mv "$dst" "$dst.bak.$(date +%s)"
+        fi
     fi
 
     ln -sf "$src" "$dst"
