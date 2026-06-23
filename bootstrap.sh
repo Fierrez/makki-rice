@@ -12,7 +12,7 @@
 
 set -uo pipefail
 
-RICE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+RICE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 LOG_DIR="$RICE_DIR/tools/logs"
 LOG_FILE="$LOG_DIR/bootstrap.log"
 TERMINAL_LOG="$LOG_DIR/bootstrap-terminal.log"

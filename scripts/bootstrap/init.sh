@@ -8,7 +8,7 @@
 
 set -euo pipefail
 
-RICE_DIR="${RICE_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+RICE_DIR="${RICE_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd -P)}"
 
 GREEN='\033[0;32m'; YELLOW='\033[1;33m'; RESET='\033[0m'
 info() { echo -e "${GREEN}[✓]${RESET} $*"; }

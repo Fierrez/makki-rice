@@ -7,7 +7,7 @@
 
 set -euo pipefail
 
-RICE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+RICE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 CONFIG_TARGET="$HOME/.config"
 
 FORCE_OVERWRITE="${FORCE_OVERWRITE:-false}"

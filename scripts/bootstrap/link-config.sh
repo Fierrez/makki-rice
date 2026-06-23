@@ -5,7 +5,7 @@
 
 set -euo pipefail
 
-RICE_DIR="${RICE_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+RICE_DIR="${RICE_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd -P)}"
 CONFIG="$HOME/.config"
 
 GREEN='\033[0;32m'; YELLOW='\033[1;33m'; RESET='\033[0m'
@@ -17,6 +17,22 @@ safe_link() {
     local dst="$2"
 
     [[ ! -e "$src" ]] && warn "Source missing: $src" && return
+
+    # Clean up broken/looped symlinks at destination if they exist
+    if [[ -L "$dst" ]]; then
+        if ! realpath "$dst" &>/dev/null; then
+            warn "Removing broken or circular symlink: $dst"
+            rm -f "$dst"
+        fi
+    fi
+
+    # Avoid self-referencing symlink loops
+    local canonical_src; canonical_src=$(realpath -f "$src" 2>/dev/null || echo "$src")
+    local canonical_dst; canonical_dst=$(realpath -f "$dst" 2>/dev/null || echo "$dst")
+    if [[ "$canonical_src" == "$canonical_dst" ]]; then
+        info "Already linked: $(basename "$src") → $dst"
+        return
+    fi
 
     if [[ -L "$dst" ]]; then
         rm "$dst"

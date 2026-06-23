@@ -8,7 +8,7 @@
 
 set -uo pipefail
 
-RICE_DIR="${RICE_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+RICE_DIR="${RICE_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd -P)}"
 DRY_RUN="${DRY_RUN:-false}"
 ROLLBACK_FILE="${RICE_DIR}/tools/logs/installed-packages.txt"
 
