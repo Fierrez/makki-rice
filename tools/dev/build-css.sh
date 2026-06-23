@@ -108,4 +108,6 @@ done
 gen_vars "$THEME_ARG"
 compile
 
-[[ "$DO_WATCH" == "true" ]] && watch_mode
+if [[ "$DO_WATCH" == "true" ]]; then
+    watch_mode
+fi
