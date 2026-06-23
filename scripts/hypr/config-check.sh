@@ -46,6 +46,10 @@ else
     fi
 fi
 
+# Sanitize error_count to ensure it is a clean integer (stripping carriage returns/spaces)
+error_count=$(echo "$error_count" | tr -cd '0-9')
+error_count=${error_count:-0}
+
 # ─── Log and Alert ────────────────────────────────────────────────────────────
 if [[ "$error_count" -gt 0 ]]; then
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')

@@ -43,8 +43,9 @@ ARCH_SYSTEM=(
 
 ARCH_UTILS=(
     jq socat wl-clipboard grim slurp
-    cliphist wl-paste
+    cliphist
     kitty thunar thunar-archive-plugin
+    dart-sass
 )
 
 ARCH_FONTS=(

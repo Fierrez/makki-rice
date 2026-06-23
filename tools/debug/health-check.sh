@@ -125,6 +125,10 @@ if command -v hyprctl &>/dev/null; then
         fi
     fi
 
+    # Sanitize count to ensure it is a clean integer (stripping carriage returns/spaces)
+    count=$(echo "$count" | tr -cd '0-9')
+    count=${count:-0}
+
     if (( count > 0 )); then
         warn "$count configuration error(s) detected. Check: ~/.local/share/makki-rice/logs/hyprland-config-errors.log"
     else
