@@ -1,0 +1,106 @@
+/* Rofi — Catppuccin Mocha theme */
+
+* {
+    bg:          #1e1e2e;
+    bg-s:        #181825;
+    surface0:    #313244;
+    surface1:    #45475a;
+    overlay:     #6c7086;
+    text:        #cdd6f4;
+    subtext:     #a6adc8;
+    blue:        #89b4fa;
+    mauve:       #cba6f7;
+    border-c:    rgba(88, 91, 112, 0.55);
+
+    background-color:   transparent;
+    text-color:         @text;
+    font:               "JetBrains Mono Nerd Font 13";
+}
+
+configuration {
+    show-icons:  true;
+    icon-theme:  "Papirus-Dark";
+}
+
+window {
+    background-color: @bg;
+    border:           1px solid @border-c;
+    border-radius:    14px;
+    width:            500px;
+    padding:          8px;
+    x-offset:         0;
+    y-offset:         70;
+    location:         north;
+    anchor:           north;
+    box-shadow:       0 24px 64px rgba(17, 17, 27, 0.8);
+}
+
+mainbox {
+    background-color: transparent;
+    children:         [inputbar, listview];
+    spacing:          8px;
+}
+
+inputbar {
+    background-color: @surface0;
+    border-radius:    10px;
+    padding:          10px 14px;
+    border:           1px solid @border-c;
+    children:         [prompt, entry];
+    spacing:          6px;
+}
+
+prompt {
+    background-color: transparent;
+    text-color:       @blue;
+    font:             "JetBrains Mono Nerd Font Bold 13";
+}
+
+entry {
+    background-color: transparent;
+    text-color:       @text;
+    placeholder:      "Search...";
+    placeholder-color: @overlay;
+    cursor:           text;
+}
+
+listview {
+    background-color: transparent;
+    lines:            8;
+    columns:          1;
+    spacing:          2px;
+    scrollbar:        false;
+}
+
+element {
+    background-color: transparent;
+    border-radius:    8px;
+    padding:          8px 10px;
+    spacing:          10px;
+    children:         [element-icon, element-text];
+    orientation:      horizontal;
+    cursor:           pointer;
+}
+
+element:selected {
+    background-color: @surface0;
+}
+
+element:hover {
+    background-color: rgba(49, 50, 68, 0.6);
+}
+
+element-icon {
+    background-color: transparent;
+    size:             24px;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       @text;
+    vertical-align:   0.5;
+}
+
+element-text:selected {
+    text-color: @blue;
+}

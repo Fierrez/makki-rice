@@ -1,0 +1,52 @@
+/* eww/eww.scss — EWW fallback styles — Catppuccin Mocha */
+
+* { all: unset; font-family: "JetBrains Mono Nerd Font", sans-serif; }
+
+.eww-bar {
+    background: rgba(24, 24, 37, 0.90);
+    border-bottom: 1px solid rgba(88, 91, 112, 0.45);
+    padding: 0 16px;
+    color: #cdd6f4;
+}
+
+.eww-time {
+    font-size: 14px;
+    font-weight: 700;
+    color: #cdd6f4;
+    letter-spacing: 0.5px;
+}
+
+.eww-date {
+    font-size: 12px;
+    color: #a6adc8;
+}
+
+.eww-workspaces { gap: 6px; }
+
+.eww-ws-btn {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: rgba(49, 50, 68, 0.6);
+    color: #6c7086;
+    cursor: pointer;
+    transition: all 150ms ease;
+
+    &.active {
+        background: rgba(137, 180, 250, 0.2);
+        color: #89b4fa;
+        font-weight: 700;
+    }
+
+    &:hover { color: #cdd6f4; background: rgba(49, 50, 68, 0.9); }
+}
+
+.eww-vol-icon, .eww-bat-icon {
+    font-size: 14px;
+    color: #89b4fa;
+}
+
+.eww-vol-label, .eww-bat-label {
+    font-size: 12px;
+    color: #a6adc8;
+}

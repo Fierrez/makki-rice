@@ -1,7 +1,8 @@
 // =============================================================================
-// main.scss — AGS Global Styles
+// main.scss — AGS Global Styles (Phase 2 + 3 — Full)
 // =============================================================================
 
+@use "sass:math";
 @import "variables";
 
 // ─── Reset ───────────────────────────────────────────────────────────────────
@@ -13,7 +14,6 @@
     color: $text-primary;
 }
 
-// ─── Window Reset ────────────────────────────────────────────────────────────
 window {
     background: transparent;
 }
@@ -27,106 +27,242 @@ window {
 }
 
 .island {
-    background: rgba($mantle, 0.88);
-    border: 1px solid $border-color;
+    background: rgba($mantle, 0.90);
+    border: 1px solid rgba($surface2, 0.55);
     border-radius: $radius-pill;
-    padding: $space-sm $space-lg;
-    min-width: 200px;
-    min-height: 38px;
-    box-shadow: 0 8px 32px $shadow-color, 0 0 0 1px rgba($blue, 0.08);
-    transition: all $transition-slow;
+    padding: $space-sm $space-xl;
+    min-width: 210px;
+    min-height: 40px;
+    box-shadow:
+        0 8px 32px rgba($crust, 0.65),
+        0 0 0 1px rgba($blue, 0.06),
+        inset 0 1px 0 rgba(white, 0.04);
+    transition:
+        min-width    $transition-slow,
+        border-radius $transition-slow,
+        padding      $transition-slow,
+        background   $transition-normal;
 
-    &.expanded {
-        min-width: 420px;
+    // ─── Expanded states ──────────────────────────────────────────────
+    &.island-expanded {
+        min-width: 440px;
         border-radius: $radius-xl;
         padding: $space-md $space-xl;
-        background: rgba($mantle, 0.94);
+        background: rgba($mantle, 0.96);
+
+        &.mode-media {
+            min-width: 500px;
+        }
+        &.mode-battery {
+            min-width: 300px;
+        }
+        &.mode-network {
+            min-width: 300px;
+        }
     }
 }
 
-.island-idle {
+// ─── Idle View ───────────────────────────────────────────────────────────────
+
+.island-idle-view {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: $space-lg;
+    gap: $space-xl;
 }
 
-.island-clock {
+.island-clock-label {
     font-size: $font-size-base;
-    font-weight: bold;
+    font-weight: 700;
     color: $text-primary;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
+    font-family: $font-mono;
 }
 
 // Workspace pills
-.workspace-pills {
+.ws-bar {
     display: flex;
     gap: 5px;
     align-items: center;
 }
 
-.workspace-pill {
-    width: 8px;
-    height: 8px;
+.ws-pill {
+    width: 7px;
+    height: 7px;
     border-radius: $radius-pill;
-    background: $surface2;
+    background: rgba($surface2, 0.6);
     transition: all $transition-normal;
 
-    &.active {
-        width: 20px;
-        background: linear-gradient(90deg, $blue, $mauve);
+    &.ws-active {
+        width: 22px;
+        height: 7px;
+        background: linear-gradient(90deg, $blue 0%, $mauve 100%);
+        box-shadow: 0 0 6px rgba($blue, 0.5);
     }
 
-    &.occupied {
+    &.ws-occupied {
         background: $overlay1;
+        width: 9px;
+        height: 9px;
     }
 
-    &.empty {
-        opacity: 0.35;
+    &.ws-empty {
+        opacity: 0.3;
     }
 }
 
-// Volume expanded
-.island-expanded {
+// ─── Expanded Views — shared ─────────────────────────────────────────────────
+
+.island-expanded-view {
     display: flex;
     align-items: center;
     gap: $space-md;
-
-    &.volume {
-        .island-icon { color: $blue; }
-    }
+    min-height: 36px;
 }
 
+.island-exp-icon {
+    -gtk-icon-size: 22px;
+    min-width: 22px;
+    color: $blue;
+    opacity: 0.9;
+}
+
+.island-exp-pct {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    min-width: 40px;
+    text-align: right;
+    font-family: $font-mono;
+    font-weight: 600;
+}
+
+// Shared slider
 .island-slider {
     trough {
-        background: $surface1;
+        background: rgba($surface0, 0.9);
         border-radius: $radius-pill;
-        min-height: 4px;
+        min-height: 5px;
     }
-
     highlight {
         background: linear-gradient(90deg, $blue, $mauve);
         border-radius: $radius-pill;
     }
-
     slider {
-        background: $text;
+        background: white;
         border-radius: $radius-pill;
-        min-width: 14px;
-        min-height: 14px;
-        box-shadow: 0 2px 8px $shadow-color;
+        min-width: 15px;
+        min-height: 15px;
+        box-shadow: 0 2px 10px rgba($crust, 0.6);
+        transition: min-width $transition-fast, min-height $transition-fast;
+
+        &:hover {
+            min-width: 17px;
+            min-height: 17px;
+        }
     }
 }
 
-.island-percent {
-    font-size: $font-size-sm;
-    color: $text-secondary;
-    min-width: 36px;
-    text-align: right;
+// ─── Volume View ─────────────────────────────────────────────────────────────
+.volume-view .island-exp-icon { color: $sky; }
+
+// ─── Brightness View ─────────────────────────────────────────────────────────
+.brightness-view .island-exp-icon { color: $yellow; }
+
+// ─── Battery View ────────────────────────────────────────────────────────────
+.battery-view {
+    .island-exp-icon { color: $green; }
+
+    .battery-pct {
+        font-size: $font-size-lg;
+        font-weight: 700;
+        font-family: $font-mono;
+    }
+
+    .battery-status {
+        font-size: $font-size-sm;
+        color: $text-muted;
+    }
+
+    &.critical .island-exp-icon { color: $red; }
+    &.low .island-exp-icon      { color: $peach; }
+}
+
+// ─── Network View ────────────────────────────────────────────────────────────
+.network-view {
+    .island-exp-icon { color: $teal; }
+
+    .network-ssid {
+        font-size: $font-size-base;
+        font-weight: 600;
+    }
+
+    .network-detail {
+        font-size: $font-size-sm;
+        color: $text-muted;
+    }
+}
+
+// ─── Media View ──────────────────────────────────────────────────────────────
+.media-view {
+    gap: $space-md;
+
+    .media-art-box {
+        width: 40px;
+        height: 40px;
+        border-radius: $radius-sm;
+        background: $surface0;
+        background-size: cover;
+        background-position: center;
+        border: 1px solid $border-color;
+        flex-shrink: 0;
+    }
+
+    .media-info {
+        gap: 2px;
+    }
+
+    .media-title {
+        font-size: $font-size-base;
+        font-weight: 600;
+    }
+
+    .media-artist {
+        font-size: $font-size-sm;
+        color: $text-secondary;
+    }
+
+    .media-controls {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        margin-left: auto;
+    }
+
+    .media-btn {
+        padding: 5px;
+        border-radius: $radius-md;
+        color: $text-secondary;
+        cursor: pointer;
+        transition: all $transition-fast;
+
+        &:hover {
+            background: rgba($surface1, 0.9);
+            color: $text-primary;
+        }
+
+        &.play {
+            padding: 7px;
+            color: $blue;
+
+            &:hover {
+                background: rgba($blue, 0.15);
+            }
+        }
+    }
 }
 
 // =============================================================================
-// DOCK
+// DOCK (Phase 3)
 // =============================================================================
 
 .dock-window {
@@ -134,53 +270,101 @@ window {
 }
 
 .dock {
-    background: rgba($mantle, 0.85);
-    border: 1px solid $border-color;
+    background: rgba($mantle, 0.88);
+    border: 1px solid rgba($surface2, 0.5);
     border-radius: $radius-xl;
-    padding: $space-sm $space-lg;
-    box-shadow: 0 8px 40px $shadow-color, 0 0 0 1px rgba($blue, 0.06);
-    display: flex;
-    align-items: center;
-    gap: $space-xs;
+    padding: 8px 14px;
+    box-shadow:
+        0 16px 48px rgba($crust, 0.7),
+        0 0 0 1px rgba($blue, 0.05),
+        inset 0 1px 0 rgba(white, 0.04);
 }
 
-.dock-item {
-    background: transparent;
-    border-radius: $radius-md;
-    padding: $space-sm;
-    transition: all $transition-normal;
-    cursor: pointer;
+.dock-items {
+    display: flex;
+    align-items: flex-end;  // items grow upward on mag
+    gap: 4px;
+}
 
-    image {
-        -gtk-icon-size: 32px;
-    }
+// ─── Dock Item ────────────────────────────────────────────────────────────────
+.dock-item {
+    border-radius: $radius-md;
+    padding: 5px;
+    cursor: pointer;
+    transition:
+        background  $transition-fast,
+        transform   200ms cubic-bezier(0.34, 1.56, 0.64, 1);
 
     &:hover,
     &.hovered {
-        background: rgba($surface1, 0.8);
-        transform: translateY(-4px) scale(1.12);
-        box-shadow: 0 8px 24px rgba($blue, 0.2);
+        background: rgba($surface0, 0.7);
     }
 
     &:active {
-        transform: translateY(-1px) scale(1.05);
+        transform: scale(0.92) translateY(2px) !important;
+    }
+
+    // Running indicator dot
+    .dock-indicator {
+        width: 4px;
+        height: 4px;
+        border-radius: $radius-pill;
+        background: $text-secondary;
+        margin: 3px auto 0;
+        transition: all $transition-normal;
+    }
+
+    &.active .dock-indicator {
+        background: $blue;
+        width: 14px;
+        box-shadow: 0 0 6px rgba($blue, 0.6);
+    }
+
+    &.running .dock-indicator {
+        visibility: visible;
+    }
+
+    // Magnification cascade
+    &.mag-center {
+        transform: translateY(-10px) scale(1.28);
+        .dock-icon { -gtk-icon-size: 44px; }
+    }
+
+    &.mag-near {
+        transform: translateY(-6px) scale(1.14);
+        .dock-icon { -gtk-icon-size: 38px; }
+    }
+
+    &.mag-far {
+        transform: translateY(-3px) scale(1.05);
     }
 }
 
-.dock-separator {
+.dock-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dock-icon {
+    -gtk-icon-size: 34px;
+    transition: -gtk-icon-size $transition-normal;
+}
+
+// ─── Separator ────────────────────────────────────────────────────────────────
+.dock-sep {
     width: 1px;
-    min-height: 28px;
-    background: $border-color;
-    margin: 0 $space-xs;
+    min-height: 30px;
+    background: rgba($surface2, 0.5);
+    margin: 0 5px;
+    align-self: center;
 }
 
 // =============================================================================
 // NOTIFICATIONS
 // =============================================================================
 
-.notifications-window {
-    background: transparent;
-}
+.notifications-window { background: transparent; }
 
 .notifications-list {
     gap: $space-sm;
@@ -189,53 +373,52 @@ window {
 }
 
 .notification {
-    background: rgba($mantle, 0.92);
-    border: 1px solid $border-color;
+    background: rgba($mantle, 0.94);
+    border: 1px solid rgba($surface2, 0.5);
+    border-left: 3px solid $blue;
     border-radius: $radius-lg;
     padding: $space-md $space-lg;
     min-width: 360px;
     max-width: 420px;
-    box-shadow: 0 8px 32px $shadow-color;
+    box-shadow: 0 8px 32px rgba($crust, 0.6);
     display: flex;
     align-items: flex-start;
     gap: $space-md;
 
     &.critical {
-        border-color: rgba($red, 0.6);
-        box-shadow: 0 8px 32px rgba($red, 0.2), 0 0 0 1px rgba($red, 0.1);
+        border-left-color: $red;
+        box-shadow: 0 8px 32px rgba($red, 0.2), 0 0 0 1px rgba($red, 0.08);
     }
 
     &.low {
-        opacity: 0.9;
+        border-left-color: $overlay1;
+        opacity: 0.88;
     }
 }
 
-.notification-icon-box {
-    padding-top: 2px;
-}
+.notification-icon-box { padding-top: 2px; }
 
 .notification-content {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
+    hexpand: true;
 }
 
 .notification-title {
-    font-weight: bold;
+    font-weight: 700;
     font-size: $font-size-base;
-    color: $text-primary;
 }
 
 .notification-body {
     font-size: $font-size-sm;
     color: $text-secondary;
-    line-height: 1.4;
+    line-height: 1.45;
 }
 
 .notification-close {
-    background: transparent;
+    padding: 4px;
     border-radius: $radius-sm;
-    padding: $space-xs;
     color: $text-muted;
     margin-left: auto;
     cursor: pointer;
@@ -251,34 +434,31 @@ window {
 // LAUNCHER
 // =============================================================================
 
-.launcher-window {
-    background: transparent;
-}
+.launcher-window { background: transparent; }
 
 .launcher {
-    background: rgba($mantle, 0.94);
-    border: 1px solid $border-color;
+    background: rgba($mantle, 0.96);
+    border: 1px solid rgba($surface2, 0.5);
     border-radius: $radius-xl;
     padding: $space-md;
-    min-width: 480px;
-    box-shadow: 0 24px 64px $shadow-color;
-    gap: $space-sm;
+    min-width: 500px;
+    box-shadow: 0 32px 80px rgba($crust, 0.8);
     display: flex;
     flex-direction: column;
+    gap: $space-sm;
 }
 
 .launcher-entry {
-    background: rgba($surface0, 0.6);
+    background: rgba($surface0, 0.5);
     border: 1px solid $border-color;
     border-radius: $radius-lg;
     padding: $space-md $space-lg;
     font-size: $font-size-lg;
-    color: $text-primary;
     caret-color: $blue;
 
     &:focus {
-        border-color: rgba($blue, 0.5);
-        box-shadow: 0 0 0 2px rgba($blue, 0.12);
+        border-color: rgba($blue, 0.45);
+        box-shadow: 0 0 0 3px rgba($blue, 0.1);
     }
 }
 
@@ -286,35 +466,27 @@ window {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    max-height: 380px;
+    max-height: 400px;
 }
 
 .launcher-item {
-    background: transparent;
     border-radius: $radius-md;
     padding: $space-sm $space-md;
     cursor: pointer;
-    transition: all $transition-fast;
+    transition: background $transition-fast;
     display: flex;
     align-items: center;
     gap: $space-md;
 
-    &:hover {
-        background: rgba($surface0, 0.8);
-    }
-
-    &:active {
-        background: rgba($surface1, 0.9);
-    }
+    &:hover { background: rgba($surface0, 0.75); }
+    &:active { background: rgba($surface1, 0.9); }
 }
 
-.launcher-item-icon {
-    -gtk-icon-size: 24px;
-}
+.launcher-item-icon { -gtk-icon-size: 24px; }
 
 .launcher-item-label {
     font-size: $font-size-base;
-    color: $text-primary;
+    hexpand: true;
 }
 
 // =============================================================================
@@ -330,8 +502,7 @@ window {
 
 .clock-time {
     font-size: $font-size-2xl;
-    font-weight: bold;
-    color: $text-primary;
+    font-weight: 700;
     letter-spacing: 2px;
     font-family: $font-mono;
 }
@@ -341,4 +512,181 @@ window {
     color: $text-secondary;
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+// =============================================================================
+// SUBMAP OVERLAY
+// =============================================================================
+
+.submap-window { background: transparent; }
+
+.submap-box {
+    background: rgba($mantle, 0.94);
+    border: 1px solid rgba($surface2, 0.5);
+    border-radius: $radius-xl;
+    padding: $space-lg $space-xl;
+    box-shadow: 0 16px 48px rgba($crust, 0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-md;
+    min-width: 280px;
+}
+
+.submap-icon-row {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+}
+
+.submap-icon {
+    -gtk-icon-size: 18px;
+    color: $mauve;
+}
+
+.submap-name {
+    font-size: $font-size-lg;
+    font-weight: 700;
+    color: $mauve;
+    letter-spacing: 1.5px;
+}
+
+.submap-hints {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    padding-top: $space-sm;
+    border-top: 1px solid $border-color;
+}
+
+.submap-hint-row {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+}
+
+.submap-key {
+    font-family: $font-mono;
+    font-size: $font-size-sm;
+    color: $blue;
+    min-width: 80px;
+    font-weight: 600;
+}
+
+.submap-sep {
+    color: $overlay1;
+    font-size: $font-size-sm;
+}
+
+.submap-action {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+}
+
+.submap-escape {
+    font-size: $font-size-sm;
+    color: $text-muted;
+    font-style: italic;
+    margin-top: $space-xs;
+}
+
+// =============================================================================
+// POWER MENU
+// =============================================================================
+
+.powermenu-window { background: transparent; }
+
+.power-overlay {
+    background: rgba($crust, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.power-menu {
+    background: rgba($mantle, 0.96);
+    border: 1px solid rgba($surface2, 0.5);
+    border-radius: $radius-xl;
+    padding: $space-2xl;
+    box-shadow: 0 32px 80px rgba($crust, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-xl;
+    min-width: 420px;
+}
+
+.power-menu-title {
+    font-size: $font-size-xl;
+    font-weight: 700;
+    color: $text-primary;
+    letter-spacing: 1px;
+}
+
+.power-actions {
+    display: flex;
+    gap: $space-md;
+    align-items: center;
+}
+
+.power-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $space-sm;
+    width: 80px;
+    height: 80px;
+    border-radius: $radius-lg;
+    background: rgba($surface0, 0.5);
+    border: 1px solid $border-color;
+    cursor: pointer;
+    transition: all $transition-normal;
+
+    &:hover {
+        transform: translateY(-4px);
+        background: rgba($surface1, 0.8);
+        border-color: rgba($surface2, 0.8);
+        box-shadow: 0 8px 24px rgba($crust, 0.5);
+    }
+
+    &:active {
+        transform: translateY(-1px);
+    }
+
+    &.confirming {
+        animation: pulse-confirm 0.6s ease infinite alternate;
+    }
+
+    // Color variants
+    &.color-blue    { &:hover { border-color: rgba($blue, 0.5);    box-shadow: 0 8px 24px rgba($blue, 0.2);    } .power-btn-icon { color: $blue;    } }
+    &.color-teal    { &:hover { border-color: rgba($teal, 0.5);    box-shadow: 0 8px 24px rgba($teal, 0.2);    } .power-btn-icon { color: $teal;    } }
+    &.color-mauve   { &:hover { border-color: rgba($mauve, 0.5);   box-shadow: 0 8px 24px rgba($mauve, 0.2);   } .power-btn-icon { color: $mauve;   } }
+    &.color-peach   { &:hover { border-color: rgba($peach, 0.5);   box-shadow: 0 8px 24px rgba($peach, 0.2);   } .power-btn-icon { color: $peach;   } }
+    &.color-red     { &:hover { border-color: rgba($red, 0.5);     box-shadow: 0 8px 24px rgba($red, 0.2);     } .power-btn-icon { color: $red;     } }
+}
+
+.power-btn-icon {
+    -gtk-icon-size: 28px;
+    color: $text-secondary;
+    transition: color $transition-fast;
+}
+
+.power-btn-label {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    font-weight: 500;
+    transition: color $transition-fast;
+}
+
+.power-menu-hint {
+    font-size: $font-size-sm;
+    color: $text-muted;
+    font-style: italic;
+}
+
+@keyframes pulse-confirm {
+    from { background: rgba($surface0, 0.5); }
+    to   { background: rgba($peach, 0.12); border-color: rgba($peach, 0.4); }
 }

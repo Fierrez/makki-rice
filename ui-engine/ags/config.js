@@ -1,42 +1,42 @@
 // =============================================================================
-// config.js — AGS Root Configuration
-// =============================================================================
-// This is the entry point for the AGS UI engine.
-// Import all widgets and services here.
+// config.js — AGS Root Configuration (Final)
 // =============================================================================
 
 import { App } from "resource:///com/github/Aylur/ags/app.js";
 
-// ─── Services ────────────────────────────────────────────────────────────────
-import "./services/audio.js";
-import "./services/battery.js";
-import "./services/network.js";
-import "./services/workspace.js";
+// ─── Bridge (must be first) ───────────────────────────────────────────────────
+import "./services/bridge.js";
 
 // ─── Widgets ─────────────────────────────────────────────────────────────────
-import Island from "./widgets/island.js";
-import Dock from "./widgets/dock.js";
-import Notifications from "./widgets/notifications.js";
+import Island    from "./widgets/island.js";
+import Dock      from "./widgets/dock.js";
+import NotifPop  from "./widgets/notifications.js";
+import Launcher  from "./widgets/launcher.js";
+import Submap    from "./widgets/submap.js";
+import PowerMenu from "./widgets/powermenu.js";
 
 // ─── App Config ──────────────────────────────────────────────────────────────
 App.config({
-    style: "./style/main.css",
+    style: App.configDir + "/style/main.css",
 
     windows: [
-        // Dynamic Island (top-center status bar)
-        Island(),
-
-        // Floating Dock (bottom-center)
-        Dock(),
-
-        // Notification popups
-        Notifications(),
+        Island(),     // Dynamic Island  — top center
+        Dock(),       // Floating Dock   — bottom center
+        NotifPop(),   // Notifications   — top right
+        Launcher(),   // App launcher    — hidden by default
+        Submap(),     // Submap HUD      — bottom center
+        PowerMenu(),  // Power menu      — fullscreen overlay, hidden
     ],
 
-    // Quit cleanly on SIGTERM
     closeWindowDelay: {
-        "island": 200,
-        "dock": 150,
+        "island":    250,
+        "dock":      200,
+        "launcher":  180,
+        "powermenu": 150,
+    },
+
+    onWindowToggled: (name, visible) => {
+        console.log(`[AGS] "${name}" → ${visible ? "visible" : "hidden"}`);
     },
 });
 

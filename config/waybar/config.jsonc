@@ -1,0 +1,13 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 0,
+    "spacing": 0,
+    "margin-top": 0,
+    "margin-bottom": 0,
+    "modules-left": [],
+    "modules-center": [],
+    "modules-right": [],
+    "// NOTE": "Waybar is disabled — AGS handles the UI layer.",
+    "// To enable": "Uncomment modules and adjust anchoring. Useful as a fallback."
+}

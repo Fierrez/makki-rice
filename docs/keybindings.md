@@ -1,92 +1,164 @@
 # Keybindings Reference
 
-> Modifier key: `SUPER` (Windows/Meta key)
+> **Legend:** `S` = Super (Meta/Win), `C` = Ctrl, `SH` = Shift, `A` = Alt
 
-## System
+---
 
-| Keybind | Action |
-|---------|--------|
-| `SUPER + Q` | Kill active window |
-| `SUPER + SHIFT + Q` | Exit Hyprland |
-| `SUPER + F` | Toggle fullscreen (with bars) |
-| `SUPER + SHIFT + F` | True fullscreen (no bars) |
-| `SUPER + Space` | Toggle floating |
-| `SUPER + P` | Toggle pseudo-tile (dwindle) |
-| `SUPER + J` | Toggle split direction |
-| `SUPER + L` | Lock screen |
-
-## Applications
-
-| Keybind | App |
-|---------|-----|
-| `SUPER + Return` | Terminal (kitty) |
-| `SUPER + B` | Browser (firefox) |
-| `SUPER + E` | File manager (thunar) |
-| `SUPER + R` | App launcher (wofi) |
-| `SUPER + SHIFT + C` | Color picker (hyprpicker) |
-
-## Screenshots
+## 🪟 Window Management
 
 | Keybind | Action |
-|---------|--------|
-| `Print` | Area screenshot → clipboard |
-| `SHIFT + Print` | Full screenshot → ~/Pictures/Screenshots |
+|---|---|
+| `S + Q` | Kill active window |
+| `S + SH + Q` | **Power menu** (lock/sleep/reboot/shutdown) |
+| `S + CTRL + SH + Q` | Force exit Hyprland |
+| `S + F` | Fullscreen (cover bar) |
+| `S + SH + F` | Fullscreen (maximize) |
+| `S + Space` | Toggle floating |
+| `S + P` | Toggle pseudo-tiling (Dwindle) |
+| `S + T` | Toggle split direction (Dwindle) |
 
-## Focus Movement
+---
 
-| Keybind | Direction |
-|---------|-----------|
-| `SUPER + ←` or `SUPER + H` | Focus left |
-| `SUPER + →` or `SUPER + L` | Focus right |
-| `SUPER + ↑` or `SUPER + K` | Focus up |
-| `SUPER + ↓` or `SUPER + J` | Focus down |
-
-## Window Movement
-
-| Keybind | Direction |
-|---------|-----------|
-| `SUPER + SHIFT + ←/H` | Move window left |
-| `SUPER + SHIFT + →/L` | Move window right |
-| `SUPER + SHIFT + ↑/K` | Move window up |
-| `SUPER + SHIFT + ↓/J` | Move window down |
-
-## Resize
-
-| Keybind | Direction |
-|---------|-----------|
-| `SUPER + CTRL + H` | Shrink width |
-| `SUPER + CTRL + L` | Grow width |
-| `SUPER + CTRL + K` | Shrink height |
-| `SUPER + CTRL + J` | Grow height |
-
-## Workspaces
+## 🧭 Focus
 
 | Keybind | Action |
-|---------|--------|
-| `SUPER + 1-9` | Switch to workspace 1-9 |
-| `SUPER + 0` | Switch to workspace 10 |
-| `SUPER + SHIFT + 1-9` | Move window to workspace 1-9 |
-| `SUPER + S` | Toggle scratchpad |
-| `SUPER + SHIFT + S` | Move to scratchpad |
-| `SUPER + Scroll ↓` | Next workspace |
-| `SUPER + Scroll ↑` | Previous workspace |
+|---|---|
+| `S + H / ←` | Focus left |
+| `S + L / →` | Focus right |
+| `S + K / ↑` | Focus up |
+| `S + J / ↓` | Focus down |
 
-## Mouse
+---
 
-| Action | Result |
-|--------|--------|
-| `SUPER + LMB drag` | Move window |
-| `SUPER + RMB drag` | Resize window |
+## 🗂️ Window Movement
 
-## Media Keys
+| Keybind | Action |
+|---|---|
+| `S + SH + H / ←` | Move window left |
+| `S + SH + L / →` | Move window right |
+| `S + SH + K / ↑` | Move window up |
+| `S + SH + J / ↓` | Move window down |
 
-| Key | Action |
-|-----|--------|
-| `XF86AudioRaiseVolume` | Volume up +5% |
-| `XF86AudioLowerVolume` | Volume down -5% |
+---
+
+## ↔️ Resize
+
+| Keybind | Action |
+|---|---|
+| `S + CTRL + H` | Shrink width |
+| `S + CTRL + L` | Grow width |
+| `S + CTRL + K` | Shrink height |
+| `S + CTRL + J` | Grow height |
+
+---
+
+## 🖥️ Workspaces
+
+| Keybind | Action |
+|---|---|
+| `S + 1–9` | Switch to workspace 1–9 |
+| `S + 0` | Switch to workspace 10 |
+| `S + SH + 1–9` | Move window to workspace 1–9 |
+| `S + scroll ↑/↓` | Cycle workspaces |
+| `S + S` | Toggle scratchpad |
+| `S + SH + S` | Move window to scratchpad |
+
+---
+
+## 🚀 Apps
+
+| Keybind | Action |
+|---|---|
+| `S + Return` | Terminal (kitty) |
+| `S + B` | Browser (firefox) |
+| `S + E` | File manager (thunar) |
+| `S + R` | App launcher (wofi → rofi → AGS) |
+| `S + SH + C` | Color picker (hyprpicker) |
+| `S + V` | Clipboard history (cliphist + wofi) |
+
+---
+
+## 🔔 Notifications
+
+| Keybind | Action |
+|---|---|
+| `S + N` | Toggle notification center (swaync) |
+| `S + SH + N` | Toggle Do Not Disturb |
+
+---
+
+## 🎨 Themes
+
+| Keybind | Action |
+|---|---|
+| `S + A + 1` | Switch to **Catppuccin Mocha** (dark) |
+| `S + A + 2` | Switch to **Catppuccin Latte** (light) |
+| `S + A + 3` | Switch to **Catppuccin Frappé** (dark) |
+| `S + A + 4` | Switch to **Catppuccin Macchiato** (dark) |
+
+---
+
+## 📷 Screenshots
+
+| Keybind | Action |
+|---|---|
+| `Print` | Region screenshot → clipboard |
+| `SH + Print` | Full screen → file (~/Pictures/Screenshots/) |
+| `S + Print` | Full screen → clipboard |
+
+---
+
+## 🎵 Media
+
+| Keybind | Action |
+|---|---|
+| `XF86AudioRaiseVolume` | Volume up (+ island expand) |
+| `XF86AudioLowerVolume` | Volume down (+ island expand) |
 | `XF86AudioMute` | Toggle mute |
 | `XF86MonBrightnessUp` | Brightness up |
 | `XF86MonBrightnessDown` | Brightness down |
-| `XF86AudioPlay` | Play/pause |
-| `XF86AudioNext` | Next track |
-| `XF86AudioPrev` | Previous track |
+| `XF86AudioPlay` | Play/Pause (+ media island) |
+| `XF86AudioNext` | Next track (+ media island) |
+| `XF86AudioPrev` | Previous track (+ media island) |
+
+---
+
+## 🔒 Lock / Power
+
+| Keybind | Action |
+|---|---|
+| `S + CTRL + A + L` | Lock screen immediately |
+| `S + SH + Q` | Power menu overlay |
+
+---
+
+## 🔧 Developer
+
+| Keybind | Action |
+|---|---|
+| `S + SH + R` | Rebuild CSS + AGS hot-reload |
+| `S + A + R` | Restart AGS |
+
+---
+
+## 🖱️ Mouse
+
+| Keybind | Action |
+|---|---|
+| `S + LMB drag` | Move window |
+| `S + RMB drag` | Resize window |
+| `S + scroll` | Switch workspace |
+
+---
+
+## Power Menu Actions
+
+> Triggered with `S + SH + Q`. Destructive actions require **two clicks**.
+
+| Button | Action | Confirm required |
+|---|---|---|
+| 🔒 Lock | `loginctl lock-session` | No |
+| 💤 Sleep | `systemctl suspend` | No |
+| 🚪 Logout | `hyprctl dispatch exit` | **Yes** |
+| 🔄 Reboot | `systemctl reboot` | **Yes** |
+| ⏻ Shutdown | `systemctl poweroff` | **Yes** |

@@ -1,0 +1,3 @@
+/* waybar/style.css — Minimal fallback style (AGS is primary) */
+* { all: unset; font-family: "JetBrains Mono Nerd Font", sans-serif; }
+window#waybar { background: transparent; }

@@ -1,0 +1,18 @@
+# wofi/config — App launcher configuration
+# Launched via: wofi --show drun
+
+allow_images=true
+allow_markup=true
+width=500
+height=400
+location=top
+x_offset=0
+y_offset=80
+term=kitty
+layer=overlay
+insensitive=true
+prompt=Search...
+hide_scroll=false
+dynamic_lines=true
+image_size=24
+columns=1
