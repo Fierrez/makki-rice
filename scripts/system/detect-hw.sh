@@ -23,6 +23,7 @@ EOF
 
 # Helper functions
 info() { echo -e "\033[0;32m[✓]\033[0m $*"; }
+warn() { echo -e "\033[1;33m[!]\033[0m $*"; }
 
 write_vm() {
     info "Applying VM rendering overrides..."
@@ -51,6 +52,41 @@ write_intel_amd() {
 # Intel/AMD Real Hardware Settings
 # Native hardware cursors enabled, no Nvidia/VM workarounds needed.
 EOF
+}
+
+confirm_detection() {
+    local detected_mode="$1"
+    local detected_label="$2"
+
+    # If non-interactive, skip prompt
+    if [ ! -t 0 ]; then
+        info "Non-interactive shell. Auto-applying profile: $detected_label"
+        MODE="$detected_mode"
+        return
+    fi
+
+    echo -ne "  \033[1;33m[?]\033[0m Detected hardware/VM: \033[1;36m$detected_label\033[0m. Is this correct? [Y/n]: "
+    read -r response
+    response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
+
+    if [[ -z "$response" || "$response" == "y" || "$response" == "yes" ]]; then
+        MODE="$detected_mode"
+    else
+        echo "  Please select the correct hardware profile:"
+        echo "    1) NVIDIA proprietary drivers"
+        echo "    2) VM (VirtualBox/QEMU guest overrides)"
+        echo "    3) Intel/AMD native open-source drivers"
+        while true; do
+            echo -ne "  Select option [1-3]: "
+            read -r choice
+            case "$choice" in
+                1) MODE="nvidia"; break ;;
+                2) MODE="vm"; break ;;
+                3) MODE="intel-amd"; break ;;
+                *) warn "Invalid choice. Please enter 1, 2, or 3." ;;
+            esac
+        done
+    fi
 }
 
 # Parse arguments
@@ -92,15 +128,21 @@ else
     fi
 
     if [ "$IS_VM" = true ]; then
-        info "Auto-detected: Virtual Machine (${VM_TYPE:-unknown})"
-        write_vm
+        confirm_detection "vm" "Virtual Machine (${VM_TYPE:-unknown})"
     # 2. Detect NVIDIA GPU
     elif lspci 2>/dev/null | grep -qi 'nvidia'; then
-        info "Auto-detected: NVIDIA GPU"
-        write_nvidia
+        confirm_detection "nvidia" "NVIDIA GPU"
     # 3. Default: Intel / AMD
     else
-        info "Auto-detected: Intel/AMD Real Hardware"
+        confirm_detection "intel-amd" "Intel/AMD Real Hardware"
+    fi
+
+    # Execute resolved profile
+    if [ "$MODE" = "vm" ]; then
+        write_vm
+    elif [ "$MODE" = "nvidia" ]; then
+        write_nvidia
+    elif [ "$MODE" = "intel-amd" ]; then
         write_intel_amd
     fi
 fi

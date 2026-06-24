@@ -48,6 +48,13 @@ bash bootstrap.sh --intel-amd
 # or
 bash install.sh --intel-amd
 
-# Auto-detect (default)
+# Auto-detect (default) - Prompts for user verification when running in an interactive terminal
 bash bootstrap.sh --auto
+
+### Auto-Detection Verification Prompt
+When using `--auto` or letting the scripts auto-detect the hardware, if the installer is run in an interactive terminal (`tty`), it will prompt:
+`Detected hardware/VM: [NVIDIA GPU / VM / Intel/AMD]. Is this correct? [Y/n]:`
+- **Yes (default/Enter)**: Proceeds to write the detected profile to `hw-env.conf`.
+- **No (n)**: Spawns an interactive selection menu where you can manually override and choose the correct setup.
+- **Non-interactive shells**: If standard input is not a TTY (such as in headless or background script execution), the installer skips the verification prompt and automatically applies the detected profile.
 ```

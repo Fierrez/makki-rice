@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Dynamic hardware and VM environment boot override script (`scripts/system/detect-hw.sh`) that dynamically configures Hyprland.
+- Interactive verification prompt and selection menu fallback inside `detect-hw.sh` during auto-detection mode.
 - Override parameters (`--nvidia`, `--vm`, `--intel-amd`, `--auto`) in `bootstrap.sh` and `install.sh` to allow forcing specific hardware/rendering profiles during installation.
 - Dynamic environment loading support in `config/hypr/env.conf`.
 
