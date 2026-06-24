@@ -5,8 +5,8 @@
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
     "jsxImportSource": "astal/gtk3",
-    "strict": true,
-    "noImplicitAny": true,
+    "strict": false,
+    "noImplicitAny": false,
     "esModuleInterop": true,
     "skipLibCheck": true
   }

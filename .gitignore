@@ -24,11 +24,11 @@ desktop.ini
 *~
 
 # Wallpapers (too large for git — use git-lfs or manual download)
-assets/wallpapers/*.jpg
-assets/wallpapers/*.jpeg
-assets/wallpapers/*.png
-assets/wallpapers/*.webp
-!assets/wallpapers/.gitkeep
+# assets/wallpapers/*.jpg
+# assets/wallpapers/*.jpeg
+# assets/wallpapers/*.png
+# assets/wallpapers/*.webp
+# !assets/wallpapers/.gitkeep
 
 # Fonts (binary)
 assets/fonts/*.ttf

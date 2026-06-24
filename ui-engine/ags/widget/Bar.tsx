@@ -116,6 +116,7 @@ function DynamicIsland() {
 export default function Bar(monitor: Gdk.Monitor) {
     return (
         <window
+            visible
             className="DynamicIslandWindow"
             monitor={monitor}
             exclusivity={Astal.Exclusivity.EXCLUSIVE}
