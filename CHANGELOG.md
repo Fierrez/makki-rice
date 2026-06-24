@@ -2,105 +2,93 @@
 
 All notable changes to makki-rice are documented here.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ---
 
 ## [Unreleased]
 
+### Added
+- Dynamic hardware and VM environment boot override script (`scripts/system/detect-hw.sh`) that dynamically configures Hyprland.
+- Override parameters (`--nvidia`, `--vm`, `--intel-amd`, `--auto`) in `bootstrap.sh` and `install.sh` to allow forcing specific hardware/rendering profiles during installation.
+- Dynamic environment loading support in `config/hypr/env.conf`.
+
+### Fixed
+- Renamed all occurrences of the deprecated `swww` command/package and `swww-daemon` to `awww` and `awww-daemon` respectively across all scripts, configurations, and documentation.
+
+---
+
 ## [0.6.0] — 2026-06-23
 
-### Phase 6 — Theme System
-- `config/themes/catppuccin-frappe.js` — Frappé palette definition
-- `config/themes/catppuccin-macchiato.js` — Macchiato palette definition
-- `scripts/system/theme-switch.sh` — One-command theme switcher:
-  - GTK 3 + GTK 4 settings.ini
-  - gsettings (icon, cursor, color-scheme)
-  - Default cursor index.theme
-  - awww wallpaper transition (grow from center)
-  - Hyprland border color via `hyprctl keyword`
-  - SCSS rebuild → AGS hot-reload
-  - Persists selection to `~/.cache/makki-rice/current-theme`
-- `tools/dev/gen-theme-vars.mjs` — Node.js ES module that reads theme JS → generates `variables.scss`
-- `tools/dev/build-css.sh` — Updated: calls gen-theme-vars first, added `--watch` mode, `--theme` flag
-- `config/kitty/kitty.conf` — Full Kitty terminal config (Mocha palette, JetBrains Mono Nerd Font, tab powerline)
-- `Makefile` — Developer task runner (css, watch, theme, health, log, reload, ags-restart)
-- `autostart.conf` — Fixed wallpaper path, added startup theme apply, XDG portal ordering
-- `bindings.conf` — Added `SUPER+ALT+1-4` theme switching, `SUPER+SHIFT+Q` power menu, `SUPER+SHIFT+R` CSS reload
+### Added
+- Catppuccin themes: Frappé (`config/themes/catppuccin-frappe.js`) and Macchiato (`config/themes/catppuccin-macchiato.js`).
+- One-command theme switcher script (`scripts/system/theme-switch.sh`) supporting GTK 3/4 settings, gsettings, default cursor themes, awww wallpaper transitions, Hyprland border color, SCSS rebuilding, and AGS hot-reload.
+- Node.js generator script (`tools/dev/gen-theme-vars.mjs`) to convert JavaScript themes into Sass variables (`variables.scss`).
+- Developer task runner (`Makefile`) supporting `css`, `watch`, `theme`, `health`, `log`, `reload`, and `ags-restart`.
+- Custom Kitty terminal configuration (`config/kitty/kitty.conf`) with Catppuccin Mocha theme, JetBrains Mono font, and powerline style tabs.
+
+### Changed
+- Refactored `autostart.conf` to fix the wallpaper path, add startup theme application, and refine XDG portal launch ordering.
+- Updated `bindings.conf` to add theme switching shortcuts (`SUPER+ALT+1-4`), power menu (`SUPER+SHIFT+Q`), and CSS reload (`SUPER+SHIFT+R`).
+- Updated Sass compilation script `tools/dev/build-css.sh` with `--watch` mode, `--theme` support, and theme variable generation.
 
 ---
 
 ## [0.5.0] — 2026-06-23
 
-### Phase 5 — Bootstrap Hardening
-- `bootstrap.sh` — Flags: `--dry-run`, `--skip-packages`, `--skip-link`, `--skip-init`, `--health`
-  - /etc/os-release distro detection (Arch/Fedora/Debian/NixOS)
-  - Phase runner with per-phase error isolation
-  - SCSS compile step on bootstrap
-  - Optional post-install health check
-- `scripts/bootstrap/packages.sh` — Hardened package installer:
-  - Multi-distro: pacman, AUR (yay/paru), dnf, apt
-  - Skip-installed check per package
-  - Dry-run mode via `DRY_RUN=true`
-  - Rollback list to `tools/logs/installed-packages.txt`
+### Added
+- Distro detection for Arch, Fedora, Debian, and NixOS inside `bootstrap.sh`.
+- Rollback list generation during package installs to `tools/logs/installed-packages.txt`.
+- Dry-run mode (`DRY_RUN=true`) and skip options (`--skip-packages`, `--skip-link`, `--skip-init`) for bootstrap phase isolation.
+
+### Changed
+- Hardened package installer (`scripts/bootstrap/packages.sh`) to support multiple package managers (pacman, AUR helper, dnf, apt) with skip-installed checks.
+- Refactored `bootstrap.sh` to compile SCSS assets on setup and run optional post-install health checks.
 
 ---
 
 ## [0.4.0] — 2026-06-23
 
-### Phase 4 — Event Routing Engine
-- `services/hyprland/event-router.sh` — Full rewrite:
-  - **Complete socket2 event map** — all known Hyprland events handled
-  - Per-event `rate_limit` function (nanosecond timestamps, configurable cooldown)
-  - `dedupe` — skip repeated identical events
-  - Dispatch table `case` — maps events to handler functions
-  - JSON structured logging with 2 MB rotation
-  - Graceful shutdown on `SIGTERM/SIGINT/SIGHUP`
-  - AGS bridge wrappers: `ags_island_expand`, `ags_dock_show/hide`, `ags_notify`
-- `ui-engine/ags/services/bridge.js` — AGS-side signal bridge:
-  - Internal pub/sub event bus (`onBridgeEvent`, `emit`)
-  - `globalThis.routerNotify` — generic signal from shell
-  - `globalThis.onSubmap` — submap state
-  - `globalThis.onScreencast` — screen sharing indicator
-  - `globalThis.onBrightnessChange` — reads sysfs then expands island
-  - `globalThis.onVolumeChange` — volume island trigger
-  - `globalThis.onBatteryCritical` — low battery alert
-  - `globalThis.bridgeDebug` — toggle to log all events
-- `tools/debug/event-log.sh` — Log viewer: live, filter, last N, stats, clear
-- `tools/debug/health-check.sh` — Full system health: deps, symlinks, procs, socket, services
+### Added
+- Complete Hyprland event routing engine (`services/hyprland/event-router.sh`) with rate limiting, de-duplication, JSON logging, and graceful signals.
+- AGS-side signal bridge (`ui-engine/ags/services/bridge.js`) facilitating dynamic island expansion, notification events, screencasting, and audio/brightness indicators.
+- Live log viewer script (`tools/debug/event-log.sh`).
+- Health checking script (`tools/debug/health-check.sh`) checking dependencies, symlinks, running processes, sockets, and user services.
 
 ---
 
 ## [0.3.0] — 2026-06-23
 
-### Phase 3 — Floating Dock + New Widgets
-- `ui-engine/ags/widgets/dock.js` — Full implementation
-- `ui-engine/ags/widgets/submap.js` — Submap overlay HUD with keybinding hints
-- `ui-engine/ags/widgets/powermenu.js` — Power menu (5 actions, two-click confirm, Escape close)
-- `config/swaync/` — Notification center (MPRIS, DND, volume, backlight widgets)
-- `config/rofi/` — Fuzzy launcher theme (Catppuccin Mocha)
-- `config/wofi/` — App launcher theme
-- `config/waybar/` — Stub (AGS is primary)
-- `ui-engine/eww/` — EWW fallback bar
-- `scripts/ui/` — Bridge scripts (island, dock, launcher, workspace)
-- `config/hypr/hypridle.conf` — Idle daemon (dim/lock/display-off/suspend)
-- `config/hypr/hyprlock.conf` — Lock screen (blurred screenshot bg, clock, password field)
+### Added
+- Floating app dock (`ui-engine/ags/widgets/dock.js`) featuring autohide.
+- Submap overlay HUD (`ui-engine/ags/widgets/submap.js`) showing active keybinding hints.
+- Power menu widget (`ui-engine/ags/widgets/powermenu.js`) with confirmation steps and escaping.
+- SwayNC configuration (`config/swaync/`) for notifications, DND, and widgets.
+- Rofi launcher theme (`config/rofi/`) using Catppuccin Mocha.
+- App launcher config for Wofi (`config/wofi/`).
+- Idle configurations (`config/hypr/hypridle.conf`) and lockscreen designs (`config/hypr/hyprlock.conf`).
+- Failback EWW bar configuration (`ui-engine/eww/`).
+- UI helper scripts (`scripts/ui/`) for workspace and widget routing.
 
 ---
 
 ## [0.2.0] — 2026-06-23
 
-### Phase 2 — Dynamic Island
-- `ui-engine/ags/widgets/island.js` — 6-mode state machine (idle/volume/brightness/battery/network/media)
-- `ui-engine/ags/style/main.scss` — Full stylesheet for all modes
-- `scripts/ui/island.sh` — Shell bridge for all island modes
+### Added
+- Dynamic Island status bar widget (`ui-engine/ags/widgets/island.js`) supporting multiple interactive modes.
+- Complete SCSS stylesheet (`ui-engine/ags/style/main.scss`) for island styling.
+- Shell bridging script (`scripts/ui/island.sh`) for active island updates.
 
 ---
 
 ## [0.1.0] — 2026-06-22
 
-### Phase 1 — Foundation
-- Initial repository scaffold
-- Hyprland split configs, bootstrap/install/uninstall scripts
-- AGS config skeleton, SCSS design system (Catppuccin Mocha tokens)
-- Event router service + systemd unit
-- System scripts (audio, brightness, battery, network)
-- Documentation (architecture, ui-flow, keybindings, roadmap)
+### Added
+- Repository structure and foundation.
+- Split Hyprland configuration files.
+- Foundation script system for audio, brightness, battery, and network routing.
+- Bootstrap and installation scripts (`bootstrap.sh`, `install.sh`, `uninstall.sh`).
+- Initial AGS configuration skeleton with design system SCSS variables.
+- Systemd user service for running the event router.
+- Documentation for project architecture, roadmaps, keybindings, and flow.
