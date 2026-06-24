@@ -35,7 +35,7 @@ ARCH_PACKAGES=(
     brightnessctl pamixer
     jq wl-clipboard grim slurp
     ttf-jetbrains-mono-nerd noto-fonts-emoji
-    swww
+    awww
 )
 
 install_arch() {

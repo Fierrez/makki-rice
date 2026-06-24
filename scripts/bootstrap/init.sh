@@ -79,7 +79,7 @@ setup_wallpaper() {
     local wp_dir="$RICE_DIR/assets/wallpapers"
     if [[ ! -f "$wp_dir/default.jpg" ]]; then
         warn "No default wallpaper found at $wp_dir/default.jpg"
-        warn "Add a wallpaper there, or swww will fail on boot."
+        warn "Add a wallpaper there, or awww will fail on boot."
     else
         info "Default wallpaper found."
     fi

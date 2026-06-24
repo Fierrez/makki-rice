@@ -30,7 +30,7 @@ ARCH_CORE=(
 ARCH_UI=(
     gjs gtk3 gtk-layer-shell libnotify
     wofi rofi swaync
-    swww
+    awww
 )
 
 ARCH_SYSTEM=(

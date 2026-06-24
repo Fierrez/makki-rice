@@ -15,7 +15,7 @@ All notable changes to makki-rice are documented here.
   - GTK 3 + GTK 4 settings.ini
   - gsettings (icon, cursor, color-scheme)
   - Default cursor index.theme
-  - swww wallpaper transition (grow from center)
+  - awww wallpaper transition (grow from center)
   - Hyprland border color via `hyprctl keyword`
   - SCSS rebuild → AGS hot-reload
   - Persists selection to `~/.cache/makki-rice/current-theme`

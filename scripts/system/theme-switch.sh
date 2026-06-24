@@ -96,13 +96,13 @@ EOF
 
     # ── Wallpaper ─────────────────────────────────────────────────────
     local wp="$RICE_DIR/assets/wallpapers/${id}.jpg"
-    if [[ -f "$wp" ]] && command -v swww &>/dev/null; then
+    if [[ -f "$wp" ]] && command -v awww &>/dev/null; then
         step "Transitioning wallpaper..."
-        swww img "$wp" \
+        awww img "$wp" \
             --transition-type grow \
             --transition-pos 0.5,0.5 \
             --transition-duration 1.2 \
-            2>/dev/null && info "Wallpaper: $wp" || warn "swww not running"
+            2>/dev/null && info "Wallpaper: $wp" || warn "awww not running"
     else
         [[ ! -f "$wp" ]] && warn "No wallpaper found for $id at $wp"
     fi
