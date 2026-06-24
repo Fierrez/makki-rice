@@ -45,26 +45,27 @@ ARCH_PACKAGES=(
     dart-sass
     ttf-jetbrains-mono-nerd noto-fonts noto-fonts-emoji ttf-font-awesome
     awww
+    bun
 )
 
 install_arch() {
     step "Installing packages via pacman..."
     sudo pacman -Sy --needed --noconfirm "${ARCH_PACKAGES[@]}" 2>/dev/null || true
 
-    # Install AGS (aylurs-gtk-shell) via AUR helper
+    # Install AGS (aylurs-gtk-shell-git) via AUR helper
     local helper=""
     command -v yay  &>/dev/null && helper="yay"
     command -v paru &>/dev/null && helper="paru"
 
     if command -v ags &>/dev/null; then
-        info "ags (aylurs-gtk-shell) already installed — skip"
+        info "ags (aylurs-gtk-shell-git) already installed — skip"
     elif [[ -n "$helper" ]]; then
-        info "Installing aylurs-gtk-shell via $helper..."
-        "$helper" -S --needed --noconfirm aylurs-gtk-shell 2>/dev/null || \
-            warn "aylurs-gtk-shell install failed — install manually: yay -S aylurs-gtk-shell"
+        info "Installing aylurs-gtk-shell-git via $helper..."
+        "$helper" -S --needed --noconfirm aylurs-gtk-shell-git 2>/dev/null || \
+            warn "aylurs-gtk-shell-git install failed — install manually: yay -S aylurs-gtk-shell-git"
     else
-        warn "No AUR helper found. Install AGS manually: yay -S aylurs-gtk-shell"
-        warn "See: https://aylur.github.io/ags-docs/config/installation"
+        warn "No AUR helper found. Install AGS manually: yay -S aylurs-gtk-shell-git"
+        warn "See: https://aylur.github.io/ags/guide/install.html"
     fi
 }
 

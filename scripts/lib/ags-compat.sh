@@ -17,18 +17,26 @@ else
     AGS_BIN=""
 fi
 
-# ags_run <js>
-# Fire-and-forget JS evaluation in the running AGS context. Never fails.
+# ags_run <cmd>
+# Sends a command to the running AGS context. Never fails.
 ags_run() {
     [[ -z "$AGS_BIN" ]] && return 0
-    "$AGS_BIN" -r "$1" 2>/dev/null || true
+    if [[ "$AGS_BIN" == "ags" ]]; then
+        "$AGS_BIN" request "$1" 2>/dev/null || true
+    else
+        "$AGS_BIN" -r "$1" 2>/dev/null || true
+    fi
 }
 
-# ags_run_blocking <js>
+# ags_run_blocking <cmd>
 # Like ags_run but captures stderr (for debug tools).
 ags_run_blocking() {
     [[ -z "$AGS_BIN" ]] && { echo "AGS not installed."; return 1; }
-    "$AGS_BIN" -r "$1" 2>&1 || echo "AGS not running or eval failed."
+    if [[ "$AGS_BIN" == "ags" ]]; then
+        "$AGS_BIN" request "$1" 2>&1 || echo "AGS not running or request failed."
+    else
+        "$AGS_BIN" -r "$1" 2>&1 || echo "AGS not running or eval failed."
+    fi
 }
 
 # ags_pgrep

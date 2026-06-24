@@ -46,6 +46,7 @@ ARCH_UTILS=(
     cliphist
     kitty thunar thunar-archive-plugin
     dart-sass
+    bun
 )
 
 ARCH_FONTS=(
@@ -55,7 +56,7 @@ ARCH_FONTS=(
 )
 
 AUR_PACKAGES=(
-    aylurs-gtk-shell        # AGS — latest (aylur.github.io/ags-docs)
+    aylurs-gtk-shell-git    # AGS — latest (aylur.github.io/ags/guide/install.html)
     catppuccin-gtk-theme-mocha
     bibata-cursor-theme
     papirus-icon-theme

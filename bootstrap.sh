@@ -166,6 +166,17 @@ main() {
     run_phase "System Initialization" \
         "$RICE_DIR/scripts/bootstrap/init.sh"       "$SKIP_INIT"
 
+    # ── Initialize AGS typelibs via Bun ────────────────────────────────
+    if [[ "$SKIP_INIT" != "true" && "$DRY_RUN" != "true" ]]; then
+        log STEP "Initializing AGS/Astal modules via Bun"
+        if command -v bun &>/dev/null; then
+            (cd "$RICE_DIR/ui-engine/ags" && bun install) && log INFO "Bun modules installed." || \
+                log WARN "Bun install failed. Run: cd ui-engine/ags && bun install"
+        else
+            log WARN "bun not found — skipping dependencies install. Install Bun and run: cd ui-engine/ags && bun install"
+        fi
+    fi
+
     # ── Build CSS ──────────────────────────────────────────────────────
     log STEP "Compiling SCSS → CSS"
     if command -v sass &>/dev/null && [[ "$DRY_RUN" != "true" ]]; then

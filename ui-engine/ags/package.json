@@ -1,0 +1,11 @@
+{
+  "name": "makki-shell",
+  "type": "module",
+  "dependencies": {
+    "astal": "file:/usr/share/astal/gjs"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "latest"
+  }
+}
