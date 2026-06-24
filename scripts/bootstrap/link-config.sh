@@ -51,6 +51,11 @@ safe_link() {
 }
 
 main() {
+    # Ensure hw-env.conf exists so Hyprland doesn't throw a globbing/sourcing error
+    if [[ ! -f "$RICE_DIR/config/hypr/hw-env.conf" ]]; then
+        echo "# Placeholder for hardware overrides" > "$RICE_DIR/config/hypr/hw-env.conf"
+    fi
+
     # Config directories
     safe_link "$RICE_DIR/config/hypr"   "$CONFIG/hypr"
     safe_link "$RICE_DIR/config/waybar" "$CONFIG/waybar"

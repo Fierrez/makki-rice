@@ -135,7 +135,14 @@ aur_install() {
         return 0
     fi
 
-    "$helper" -S --needed --noconfirm "${to_install[@]}" 2>/dev/null || \
+    local helper_opts=("--needed" "--noconfirm")
+    if [[ "$helper" == "yay" ]]; then
+        helper_opts+=("--answerdiff" "None" "--answerclean" "None")
+    elif [[ "$helper" == "paru" ]]; then
+        helper_opts+=("--skipreview")
+    fi
+
+    "$helper" -S "${helper_opts[@]}" "${to_install[@]}" 2>/dev/null || \
         warn "Some AUR packages failed — install manually: ${to_install[*]}"
 }
 

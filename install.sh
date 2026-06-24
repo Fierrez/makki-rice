@@ -61,8 +61,14 @@ install_arch() {
         info "ags (aylurs-gtk-shell-git) already installed — skip"
     elif [[ -n "$helper" ]]; then
         info "Installing aylurs-gtk-shell-git via $helper..."
-        "$helper" -S --needed --noconfirm aylurs-gtk-shell-git 2>/dev/null || \
-            warn "aylurs-gtk-shell-git install failed — install manually: yay -S aylurs-gtk-shell-git"
+        local helper_opts=("--needed" "--noconfirm")
+        if [[ "$helper" == "yay" ]]; then
+            helper_opts+=("--answerdiff" "None" "--answerclean" "None")
+        elif [[ "$helper" == "paru" ]]; then
+            helper_opts+=("--skipreview")
+        fi
+        "$helper" -S "${helper_opts[@]}" aylurs-gtk-shell-git 2>/dev/null || \
+            warn "aylurs-gtk-shell-git install failed — install manually: $helper -S aylurs-gtk-shell-git"
     else
         warn "No AUR helper found. Install AGS manually: yay -S aylurs-gtk-shell-git"
         warn "See: https://aylur.github.io/ags/guide/install.html"
