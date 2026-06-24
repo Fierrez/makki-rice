@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+# =============================================================================
+# makki-rice — Command Line Interface
+# =============================================================================
+# Installed to: ~/.local/bin/makki-rice
+# =============================================================================
+
+set -euo pipefail
+
+RICE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+
+# Colors
+RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'
+CYAN='\033[0;36m'; BOLD='\033[1m'; RESET='\033[0m'
+
+info() { echo -e "${GREEN}[✓]${RESET} $*"; }
+warn() { echo -e "${YELLOW}[!]${RESET} $*"; }
+error() { echo -e "${RED}[✗]${RESET} $*"; exit 1; }
+
+show_help() {
+    echo -e "${CYAN}${BOLD}makki-rice CLI${RESET}"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "Usage: makki-rice [options]"
+    echo ""
+    echo "Options:"
+    echo "  --update, -u       Update makki-rice from GitHub and run bootstrap"
+    echo "  --health, -c       Run health diagnostic checks"
+    echo "  --theme, -t <name> Switch theme (mocha|latte|frappe|macchiato)"
+    echo "  --restart, -r      Restart AGS shell daemon"
+    echo "  --help, -h         Show this help message"
+    echo ""
+}
+
+update_rice() {
+    info "Starting update..."
+    cd "$RICE_DIR"
+    
+    # 1. Fetch and pull changes
+    info "Fetching latest changes from GitHub..."
+    if ! git pull; then
+        warn "Git pull failed. Attempting to force update or reset..."
+        git fetch --all
+        git reset --hard origin/$(git branch --show-current)
+    fi
+    
+    # 2. Run bootstrap
+    info "Running bootstrap..."
+    bash bootstrap.sh
+    
+    # 3. Reload Hyprland & AGS
+    info "Reloading session..."
+    hyprctl reload || true
+    pkill -x ags || true
+    sleep 0.5
+    ags run &
+    
+    info "Update complete! 🌿"
+}
+
+case "${1:-}" in
+    --update|-u)
+        update_rice
+        ;;
+    --health|-c)
+        bash "$RICE_DIR/tools/debug/health-check.sh"
+        ;;
+    --theme|-t)
+        if [[ -z "${2:-}" ]]; then
+            error "Please specify a theme name."
+        fi
+        bash "$RICE_DIR/scripts/system/theme-switch.sh" "$2"
+        ;;
+    --restart|-r)
+        pkill -x ags || true
+        sleep 0.5
+        ags run &
+        info "AGS daemon restarted."
+        ;;
+    --help|-h|"")
+        show_help
+        ;;
+    *)
+        error "Unknown option: $1. Run 'makki-rice --help' for options."
+        ;;
+esac

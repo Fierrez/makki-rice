@@ -64,6 +64,10 @@ main() {
     # Self-reference (for service scripts)
     safe_link "$RICE_DIR" "$CONFIG/makki-rice"
 
+    # CLI Binary
+    mkdir -p "$HOME/.local/bin"
+    safe_link "$RICE_DIR/makki-rice" "$HOME/.local/bin/makki-rice"
+
     # Screenshots dir
     mkdir -p "$HOME/Pictures/Screenshots"
     info "Created: ~/Pictures/Screenshots"

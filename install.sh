@@ -132,7 +132,7 @@ set_permissions() {
     step "Setting script permissions..."
     find "$RICE_DIR/scripts" -name "*.sh" -exec chmod +x {} \;
     find "$RICE_DIR/services" -name "*.sh" -exec chmod +x {} \;
-    chmod +x "$RICE_DIR/bootstrap.sh" "$RICE_DIR/install.sh" "$RICE_DIR/uninstall.sh"
+    chmod +x "$RICE_DIR/bootstrap.sh" "$RICE_DIR/install.sh" "$RICE_DIR/uninstall.sh" "$RICE_DIR/makki-rice"
     info "Permissions set."
 }
 
