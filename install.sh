@@ -11,9 +11,11 @@ RICE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 CONFIG_TARGET="$HOME/.config"
 
 FORCE_OVERWRITE="${FORCE_OVERWRITE:-false}"
+HW_MODE=""
 for arg in "$@"; do
     case "$arg" in
         --force|--overwrite) FORCE_OVERWRITE=true ;;
+        --nvidia|--vm|--intel-amd|--intel|--amd|--auto) HW_MODE="$arg" ;;
     esac
 done
 
@@ -149,6 +151,13 @@ main() {
 
     link_config
     set_permissions
+
+    # Generate initial hardware configuration
+    if [[ -f "$RICE_DIR/scripts/system/detect-hw.sh" ]]; then
+        step "Detecting hardware & VM environment..."
+        bash "$RICE_DIR/scripts/system/detect-hw.sh" $HW_MODE
+    fi
+
     install_services
 
     echo ""

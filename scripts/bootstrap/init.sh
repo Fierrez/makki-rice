@@ -85,12 +85,18 @@ setup_wallpaper() {
     fi
 }
 
+setup_hw_detection() {
+    info "Running hardware and VM environment detector..."
+    bash "$RICE_DIR/scripts/system/detect-hw.sh" ${HW_MODE:-}
+}
+
 main() {
     setup_gtk
     setup_cursor
     setup_fonts
     setup_systemd
     setup_wallpaper
+    setup_hw_detection
     info "Initialization complete."
 }
 

@@ -31,6 +31,7 @@ SKIP_LINK=false
 SKIP_INIT=false
 RUN_HEALTH=false
 FORCE_OVERWRITE=false
+HW_MODE=""
 
 for arg in "$@"; do
     case "$arg" in
@@ -40,14 +41,29 @@ for arg in "$@"; do
         --skip-init)     SKIP_INIT=true ;;
         --health)        RUN_HEALTH=true ;;
         --force|--overwrite) FORCE_OVERWRITE=true ;;
+        --nvidia|--vm|--intel-amd|--intel|--amd|--auto) HW_MODE="$arg" ;;
         --help|-h)
-            echo "Usage: bootstrap.sh [--dry-run] [--skip-packages] [--skip-link] [--skip-init] [--health] [--force|--overwrite]"
+            echo "Usage: bootstrap.sh [options]"
+            echo ""
+            echo "Options:"
+            echo "  --dry-run           Dry run mode (no changes)"
+            echo "  --skip-packages     Skip installing package dependencies"
+            echo "  --skip-link         Skip config file symlinking"
+            echo "  --skip-init         Skip post-install configuration"
+            echo "  --health            Run system health check on completion"
+            echo "  --force             Overwrite existing files/configs"
+            echo ""
+            echo "Hardware Override Modes (optional, skips auto-detection):"
+            echo "  --nvidia            Force NVIDIA graphics profile"
+            echo "  --vm                Force Virtual Machine profile (VirtualBox/QEMU)"
+            echo "  --intel-amd         Force Intel/AMD graphics profile"
+            echo "  --auto              Default automatic hardware detection"
             exit 0
             ;;
     esac
 done
 
-export DRY_RUN RICE_DIR FORCE_OVERWRITE
+export DRY_RUN RICE_DIR FORCE_OVERWRITE HW_MODE
 
 # ─── Colors ──────────────────────────────────────────────────────────────────
 RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'
