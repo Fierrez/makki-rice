@@ -67,8 +67,8 @@ install_arch() {
         elif [[ "$helper" == "paru" ]]; then
             helper_opts+=("--skipreview")
         fi
-        "$helper" -S "${helper_opts[@]}" aylurs-gtk-shell-git libastal-hyprland-git libastal-tray-git 2>/dev/null || \
-            warn "aylurs-gtk-shell-git install failed — install manually: $helper -S aylurs-gtk-shell-git libastal-hyprland-git libastal-tray-git"
+        "$helper" -S "${helper_opts[@]}" aylurs-gtk-shell-git libastal-git libastal-gjs-git libastal-gtk3-git libastal-hyprland-git libastal-tray-git 2>/dev/null || \
+            warn "aylurs-gtk-shell-git install failed — install manually: $helper -S aylurs-gtk-shell-git libastal-git libastal-gjs-git libastal-gtk3-git libastal-hyprland-git libastal-tray-git"
     else
         warn "No AUR helper found. Install AGS manually: yay -S aylurs-gtk-shell-git"
         warn "See: https://aylur.github.io/ags/guide/install.html"

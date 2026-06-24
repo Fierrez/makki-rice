@@ -32,56 +32,39 @@ show_help() {
 }
 
 update_rice() {
-    info "Starting update..."
-    cd "$RICE_DIR"
+    local target_dir="${HOME}/makki-rice"
+    local branch="main"
     
-    # 1. Identify current branch name
-    local branch
-    branch=$(git branch --show-current 2>/dev/null || echo "main")
-    
-    # 2. Check for local modifications and stash if needed
-    local stashed=false
-    if ! git diff --quiet || ! git diff --cached --quiet; then
-        info "Stashing local changes to prevent conflicts..."
-        git stash -u
-        stashed=true
+    # Try to determine the active branch from the current directory
+    if git rev-parse --git-dir &>/dev/null; then
+        branch=$(git branch --show-current 2>/dev/null || echo "main")
     fi
     
-    # 3. Fetch from public HTTPS repo to guarantee success without authentication prompt
-    info "Fetching latest changes from GitHub (https://github.com/Fierrez/makki-rice)..."
-    if ! git fetch https://github.com/Fierrez/makki-rice.git "$branch"; then
-        error "Failed to fetch updates from GitHub."
-    fi
+    info "Starting clean update to VM native directory ($target_dir)..."
     
-    # 4. Merge changes or fall back to hard reset
-    info "Applying updates..."
-    if ! git merge FETCH_HEAD -m "Auto-merge updates via makki-rice --update" 2>/dev/null; then
-        warn "Auto-merge failed. Force resetting local branch to match remote..."
+    # 1. Clone or update in the native directory
+    if [ ! -d "$target_dir" ]; then
+        info "Cloning fresh repository to native directory..."
+        if ! git clone -b "$branch" https://github.com/Fierrez/makki-rice.git "$target_dir"; then
+            error "Failed to clone repository to $target_dir."
+        fi
+    else
+        info "Updating existing native repository..."
+        cd "$target_dir"
+        git fetch https://github.com/Fierrez/makki-rice.git "$branch"
         git reset --hard FETCH_HEAD
     fi
     
-    # 5. Restore stashed local changes if they existed
-    if [[ "$stashed" == "true" ]]; then
-        info "Restoring your local changes..."
-        if ! git stash pop; then
-            warn "Conflicts detected when applying local changes. Your changes are saved in the git stash."
-        fi
-    fi
+    # 2. Run bootstrap from the native directory
+    info "Running bootstrap from native directory..."
+    cd "$target_dir"
+    chmod +x bootstrap.sh install.sh uninstall.sh makki-rice 2>/dev/null || true
+    bash bootstrap.sh --force
     
-    # 6. Run bootstrap
-    info "Running bootstrap..."
-    bash bootstrap.sh
-    
-    # 7. Reload AGS & Hyprland
-    info "Reloading session..."
-    pkill -x ags || true
-    sleep 0.5
-    ags run &>/dev/null & disown
-    sleep 0.5
-    info "Reloading Hyprland config..."
-    hyprctl reload || true
-    
-    info "Update complete! 🌿"
+    # 3. Reload session by exiting Hyprland
+    info "Exiting Hyprland session to restart the GUI..."
+    sleep 1
+    hyprctl dispatch exit || killall Hyprland || true
 }
 
 case "${1:-}" in

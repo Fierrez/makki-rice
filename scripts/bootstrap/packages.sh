@@ -57,6 +57,9 @@ ARCH_FONTS=(
 
 AUR_PACKAGES=(
     aylurs-gtk-shell-git    # AGS — latest (aylur.github.io/ags/guide/install.html)
+    libastal-git
+    libastal-gjs-git
+    libastal-gtk3-git
     libastal-hyprland-git
     libastal-tray-git
     catppuccin-gtk-theme-mocha
