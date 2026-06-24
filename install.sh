@@ -60,15 +60,15 @@ install_arch() {
     if command -v ags &>/dev/null; then
         info "ags (aylurs-gtk-shell-git) already installed — skip"
     elif [[ -n "$helper" ]]; then
-        info "Installing aylurs-gtk-shell-git via $helper..."
+        info "Installing aylurs-gtk-shell-git, libastal-hyprland-git, libastal-tray-git via $helper..."
         local helper_opts=("--needed" "--noconfirm")
         if [[ "$helper" == "yay" ]]; then
             helper_opts+=("--answerdiff" "None" "--answerclean" "None")
         elif [[ "$helper" == "paru" ]]; then
             helper_opts+=("--skipreview")
         fi
-        "$helper" -S "${helper_opts[@]}" aylurs-gtk-shell-git 2>/dev/null || \
-            warn "aylurs-gtk-shell-git install failed — install manually: $helper -S aylurs-gtk-shell-git"
+        "$helper" -S "${helper_opts[@]}" aylurs-gtk-shell-git libastal-hyprland-git libastal-tray-git 2>/dev/null || \
+            warn "aylurs-gtk-shell-git install failed — install manually: $helper -S aylurs-gtk-shell-git libastal-hyprland-git libastal-tray-git"
     else
         warn "No AUR helper found. Install AGS manually: yay -S aylurs-gtk-shell-git"
         warn "See: https://aylur.github.io/ags/guide/install.html"
