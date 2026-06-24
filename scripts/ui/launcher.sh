@@ -19,14 +19,22 @@ open_launcher() {
     elif command -v rofi &>/dev/null; then
         rofi -show drun -theme ~/.config/rofi/mocha.rasi &
     else
-        ags -r "App.getWindow('launcher')?.show()" 2>/dev/null || true
+        if command -v agsv1 &>/dev/null; then
+            agsv1 -r "App.getWindow('launcher')?.show()" 2>/dev/null || true
+        else
+            ags -r "App.getWindow('launcher')?.show()" 2>/dev/null || true
+        fi
     fi
 }
 
 close_launcher() {
     pkill -x wofi 2>/dev/null || true
     pkill -x rofi 2>/dev/null || true
-    ags -r "App.getWindow('launcher')?.hide()" 2>/dev/null || true
+    if command -v agsv1 &>/dev/null; then
+        agsv1 -r "App.getWindow('launcher')?.hide()" 2>/dev/null || true
+    else
+        ags -r "App.getWindow('launcher')?.hide()" 2>/dev/null || true
+    fi
 }
 
 case "$action" in

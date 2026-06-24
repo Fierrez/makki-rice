@@ -23,7 +23,7 @@ dry() { echo -e "  [DRY] $*"; }
 # ─── Package Lists ────────────────────────────────────────────────────────────
 
 ARCH_CORE=(
-    hyprland hyprpaper hyprpicker hypridle hyprlock
+    hyprland hypridle hyprlock
     xdg-desktop-portal-hyprland xdg-desktop-portal
 )
 
@@ -34,7 +34,7 @@ ARCH_UI=(
 )
 
 ARCH_SYSTEM=(
-    pipewire pipewire-audio wireplumber
+    pipewire pipewire-pulse pipewire-alsa wireplumber
     networkmanager nm-connection-editor
     blueman bluez bluez-utils
     brightnessctl pamixer playerctl
@@ -55,7 +55,7 @@ ARCH_FONTS=(
 )
 
 AUR_PACKAGES=(
-    aylurs-gtk-shell
+    agsv1
     catppuccin-gtk-theme-mocha
     bibata-cursor-theme
     papirus-icon-theme

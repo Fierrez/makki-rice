@@ -10,7 +10,11 @@ action="${1:-windows}"
 arg="${2:-}"
 
 ags_r() {
-    ags -r "$1" 2>&1 || echo "AGS not running or eval failed."
+    if command -v agsv1 &>/dev/null; then
+        agsv1 -r "$1" 2>&1 || echo "AGS not running or eval failed."
+    else
+        ags -r "$1" 2>&1 || echo "AGS not running or eval failed."
+    fi
 }
 
 case "$action" in

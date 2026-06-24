@@ -28,9 +28,13 @@ for arg in "$@"; do
     case "$arg" in
         --ags)
             info "Restarting AGS..."
-            pkill -x ags 2>/dev/null || true
+            pkill -x agsv1 2>/dev/null || pkill -x ags 2>/dev/null || true
             sleep 0.3
-            ags &
+            if command -v agsv1 &>/dev/null; then
+                agsv1 &
+            else
+                ags &
+            fi
             info "AGS restarted."
             ;;
         --css)

@@ -33,7 +33,11 @@ notify_critical() {
     local pct="$1"
     notify-send -u critical -i battery-empty-symbolic \
         "Battery Critical!" "Battery at ${pct}%. Plug in now." 2>/dev/null || true
-    ags -r "globalThis.onBatteryCritical?.(${pct})" 2>/dev/null || true
+    if command -v agsv1 &>/dev/null; then
+        agsv1 -r "globalThis.onBatteryCritical?.(${pct})" 2>/dev/null || true
+    else
+        ags -r "globalThis.onBatteryCritical?.(${pct})" 2>/dev/null || true
+    fi
 }
 
 notify_low() {

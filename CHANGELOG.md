@@ -14,9 +14,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Interactive verification prompt and selection menu fallback inside `detect-hw.sh` during auto-detection mode.
 - Override parameters (`--nvidia`, `--vm`, `--intel-amd`, `--auto`) in `bootstrap.sh` and `install.sh` to allow forcing specific hardware/rendering profiles during installation.
 - Dynamic environment loading support in `config/hypr/env.conf`.
+- Support for `/usr/bin/agsv1` binary transparent fallback across all control scripts, triggers, and diagnostic tools (ensures compatibility with parallel AGS v1 and v2 setups).
 
 ### Fixed
-- Renamed all occurrences of the deprecated `swww` command/package and `swww-daemon` to `awww` and `awww-daemon` respectively across all scripts, configurations, and documentation.
+- Renamed all occurrences of the deprecated `swww` command/package and `swww-daemon` to `awww` and `awww-daemon` respectively.
+- Removed conflicting `hyprpaper` and unused `hyprpicker` from core package list (`hyprpaper` conflicts with `awww`).
+- Replaced `pipewire-audio` meta-package with explicit `pipewire-pulse` + `pipewire-alsa` to avoid unintentional PulseAudio removal.
+- Synced `install.sh` and `packages.sh` package lists — `install.sh` was missing `dart-sass`, `cliphist`, `playerctl`, `thunar`, and other packages present in the bootstrap script.
+- Changed AUR package dependency from `aylurs-gtk-shell` (now tracks AGS v2) to `agsv1` (tracks AGS v1) in `packages.sh` and `install.sh`.
+- Removed non-existent package `ags` from official pacman `ARCH_PACKAGES` list in `install.sh`.
+- Fixed process and command matching in health checks and reload tasks to account for either `ags` or `agsv1` binaries.
+- Fixed Windows compatibility in `Makefile` by replacing external `pwd` shell calls with native `$(CURDIR)` and added environment checks to skip Unix-only commands (like `make lint`) gracefully on Windows hosts.
+- Updated VM rendering overrides inside `detect-hw.sh` to prevent Kitty and AGS/GTK4 rendering crashes in virtualized environments (VirtualBox/QEMU) by forcing software OpenGL/GL backends and cairo rendering.
 
 ---
 

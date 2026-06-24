@@ -21,7 +21,11 @@ get_mute() {
 
 emit_ags_signal() {
     # Notify AGS about volume change (island expands)
-    ags -r "App.getWindow('island') && globalThis.onVolumeChange?.()" 2>/dev/null || true
+    if command -v agsv1 &>/dev/null; then
+        agsv1 -r "App.getWindow('island') && globalThis.onVolumeChange?.()" 2>/dev/null || true
+    else
+        ags -r "App.getWindow('island') && globalThis.onVolumeChange?.()" 2>/dev/null || true
+    fi
 }
 
 case "$action" in

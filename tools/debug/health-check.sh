@@ -55,7 +55,13 @@ echo -e "${RESET}"
 # ─── Core Dependencies ───────────────────────────────────────────────────────
 section "Core Dependencies"
 check_cmd hyprland   "Hyprland"
-check_cmd ags        "AGS"
+if command -v agsv1 &>/dev/null; then
+    pass "AGS (agsv1) installed"
+elif command -v ags &>/dev/null; then
+    pass "AGS (ags) installed"
+else
+    fail "AGS (ags/agsv1) NOT FOUND"
+fi
 check_cmd swaync     "swaync"
 check_cmd wofi       "wofi"
 check_cmd socat      "socat"
@@ -87,7 +93,13 @@ check_file "$HOME/.config/ags/style/main.css"   "ags/style/main.css (compiled)" 
 # ─── Running Processes ───────────────────────────────────────────────────────
 section "Running Processes"
 pgrep -x Hyprland &>/dev/null && pass "Hyprland running" || warn "Hyprland not running"
-pgrep -x ags      &>/dev/null && pass "AGS running"      || warn "AGS not running"
+if pgrep -x agsv1 &>/dev/null; then
+    pass "AGS (agsv1) running"
+elif pgrep -x ags &>/dev/null; then
+    pass "AGS (ags) running"
+else
+    warn "AGS (ags/agsv1) not running"
+fi
 pgrep -x swaync   &>/dev/null && pass "swaync running"   || warn "swaync not running"
 pgrep -x awww-daemon &>/dev/null && pass "awww daemon running" || warn "awww-daemon not running"
 

@@ -30,13 +30,20 @@ step()  { echo -e "\n${CYAN}[→]${RESET} ${BOLD}$*${RESET}"; }
 # ─── Dependency Detection ───────────────────────────────────────────────────
 
 ARCH_PACKAGES=(
-    hyprland waybar wofi rofi swaync
-    ags gjs gtk3 gtk-layer-shell
-    pipewire wireplumber
-    networkmanager
-    brightnessctl pamixer
-    jq wl-clipboard grim slurp
-    ttf-jetbrains-mono-nerd noto-fonts-emoji
+    hyprland hypridle hyprlock
+    xdg-desktop-portal-hyprland xdg-desktop-portal
+    wofi rofi swaync
+    gjs gtk3 gtk-layer-shell
+    pipewire pipewire-pulse pipewire-alsa wireplumber
+    networkmanager nm-connection-editor
+    blueman bluez bluez-utils
+    brightnessctl pamixer playerctl
+    polkit-gnome
+    jq socat wl-clipboard grim slurp
+    cliphist
+    kitty thunar thunar-archive-plugin
+    dart-sass
+    ttf-jetbrains-mono-nerd noto-fonts noto-fonts-emoji ttf-font-awesome
     awww
 )
 
@@ -45,9 +52,9 @@ install_arch() {
     sudo pacman -Sy --needed --noconfirm "${ARCH_PACKAGES[@]}" 2>/dev/null || true
 
     if command -v yay &>/dev/null; then
-        yay -S --needed --noconfirm aylurs-gtk-shell || warn "AGS install failed; install manually."
+        yay -S --needed --noconfirm agsv1 || warn "AGS install failed; install manually."
     else
-        warn "yay not found. Install AUR packages manually: aylurs-gtk-shell"
+        warn "yay not found. Install AUR packages manually: agsv1"
     fi
 }
 

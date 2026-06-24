@@ -83,8 +83,9 @@ if [[ "$error_count" -gt 0 ]]; then
     fi
 
     # Dispatch notification to AGS bridge if running
-    if pgrep -x ags &>/dev/null; then
-        # AGS can receive routerNotify with event 'configerrors'
+    if pgrep -x agsv1 &>/dev/null; then
+        agsv1 -r "globalThis.routerNotify?.('configerrors', '$error_count errors found. Check logs.')" 2>/dev/null &
+    elif pgrep -x ags &>/dev/null; then
         ags -r "globalThis.routerNotify?.('configerrors', '$error_count errors found. Check logs.')" 2>/dev/null &
     fi
     

@@ -31,6 +31,13 @@ write_vm() {
 # Virtual Machine Overrides (VirtualBox/QEMU)
 env = WLR_NO_HARDWARE_CURSORS,1
 env = WLR_RENDERER_ALLOW_SOFTWARE,1
+
+# Fix for Kitty crashing (force software OpenGL backend)
+env = WLR_RENDERER,pixman
+env = LIBGL_ALWAYS_SOFTWARE,1
+
+# Fix for AGS and other GTK4 apps failing to render
+env = GSK_RENDERER,cairo
 EOF
 }
 

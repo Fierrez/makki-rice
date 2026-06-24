@@ -8,7 +8,11 @@
 action="${1:-toggle}"
 
 ags_run() {
-    ags -r "$1" 2>/dev/null || true
+    if command -v agsv1 &>/dev/null; then
+        agsv1 -r "$1" 2>/dev/null || true
+    else
+        ags -r "$1" 2>/dev/null || true
+    fi
 }
 
 case "$action" in

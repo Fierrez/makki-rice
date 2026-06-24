@@ -16,7 +16,11 @@ get_brightness() {
 }
 
 emit_ags_signal() {
-    ags -r "globalThis.onBrightnessChange?.()" 2>/dev/null || true
+    if command -v agsv1 &>/dev/null; then
+        agsv1 -r "globalThis.onBrightnessChange?.()" 2>/dev/null || true
+    else
+        ags -r "globalThis.onBrightnessChange?.()" 2>/dev/null || true
+    fi
 }
 
 case "$action" in

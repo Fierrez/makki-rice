@@ -14,7 +14,7 @@
 # =============================================================================
 
 SHELL      := /bin/bash
-RICE_DIR   := $(shell pwd)
+RICE_DIR   := $(CURDIR)
 THEME      ?= mocha
 
 .PHONY: css watch theme health log reload ags-restart install dry-run \
@@ -67,14 +67,17 @@ config-check:
 	@bash scripts/hypr/config-check.sh
 
 ags-restart:
-	@pkill -x ags 2>/dev/null || true
+	@pkill -x agsv1 2>/dev/null || pkill -x ags 2>/dev/null || true
 	@sleep 0.3
-	@ags &
+	@if command -v agsv1 &>/dev/null; then agsv1 & else ags & fi
 	@echo "AGS restarted."
 
 ags-reload-css:
-	@ags -r "App.resetCss?.(); App.applyCss?.(App.configDir + '/style/main.css')" 2>/dev/null && \
-		echo "AGS CSS reloaded." || echo "AGS not running."
+	@if command -v agsv1 &>/dev/null; then \
+		agsv1 -r "App.resetCss?.(); App.applyCss?.(App.configDir + '/style/main.css')" 2>/dev/null && echo "AGS CSS reloaded." || echo "AGS not running."; \
+	else \
+		ags -r "App.resetCss?.(); App.applyCss?.(App.configDir + '/style/main.css')" 2>/dev/null && echo "AGS CSS reloaded." || echo "AGS not running."; \
+	fi
 
 # ─── Bootstrap ────────────────────────────────────────────────────────────────
 install:
@@ -89,9 +92,14 @@ clean:
 	@echo "Cleaned: main.css"
 
 lint:
+ifeq ($(OS),Windows_NT)
+	@echo "Error: 'make lint' requires a Unix environment (e.g. Linux, WSL, or Git Bash with shellcheck)."
+	@echo "On Windows, please run this command inside WSL (Windows Subsystem for Linux)."
+else
 	@echo "Checking shell scripts..."
 	@find scripts services tools -name "*.sh" -exec shellcheck {} + && \
 		echo "All scripts OK." || echo "Lint errors found."
+endif
 
 log-clear:
 	@bash tools/debug/event-log.sh clear
