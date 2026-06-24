@@ -1,8 +1,11 @@
 // =============================================================================
-// config.js — AGS Root Configuration (Final)
+// config.js — AGS Root Configuration
+// =============================================================================
+// Runtime: aylurs-gtk-shell (yay -S aylurs-gtk-shell)
+// Docs:    aylur.github.io/ags-docs
 // =============================================================================
 
-import { App } from "resource:///com/github/Aylur/ags/app.js";
+import { App } from "resource:///com/github/Aylur/ags/imports.js";
 
 // ─── Bridge (must be first) ───────────────────────────────────────────────────
 import "./services/bridge.js";

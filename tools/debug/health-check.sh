@@ -55,12 +55,12 @@ echo -e "${RESET}"
 # ─── Core Dependencies ───────────────────────────────────────────────────────
 section "Core Dependencies"
 check_cmd hyprland   "Hyprland"
-if command -v agsv1 &>/dev/null; then
-    pass "AGS (agsv1) installed"
-elif command -v ags &>/dev/null; then
-    pass "AGS (ags) installed"
+if command -v ags &>/dev/null; then
+    pass "AGS (aylurs-gtk-shell) installed — binary: ags"
+elif command -v agsv1 &>/dev/null; then
+    warn "AGS found as legacy 'agsv1' — upgrade: yay -S aylurs-gtk-shell"
 else
-    fail "AGS (ags/agsv1) NOT FOUND"
+    fail "AGS NOT FOUND — install: yay -S aylurs-gtk-shell"
 fi
 check_cmd swaync     "swaync"
 check_cmd wofi       "wofi"
@@ -93,12 +93,12 @@ check_file "$HOME/.config/ags/style/main.css"   "ags/style/main.css (compiled)" 
 # ─── Running Processes ───────────────────────────────────────────────────────
 section "Running Processes"
 pgrep -x Hyprland &>/dev/null && pass "Hyprland running" || warn "Hyprland not running"
-if pgrep -x agsv1 &>/dev/null; then
-    pass "AGS (agsv1) running"
-elif pgrep -x ags &>/dev/null; then
-    pass "AGS (ags) running"
+if pgrep -x ags &>/dev/null; then
+    pass "AGS (aylurs-gtk-shell) running"
+elif pgrep -x agsv1 &>/dev/null; then
+    warn "AGS running as legacy 'agsv1' — upgrade: yay -S aylurs-gtk-shell"
 else
-    warn "AGS (ags/agsv1) not running"
+    warn "AGS not running — launch: ags"
 fi
 pgrep -x swaync   &>/dev/null && pass "swaync running"   || warn "swaync not running"
 pgrep -x awww-daemon &>/dev/null && pass "awww daemon running" || warn "awww-daemon not running"

@@ -48,13 +48,23 @@ ARCH_PACKAGES=(
 )
 
 install_arch() {
-    step "Installing packages via pacman + yay..."
+    step "Installing packages via pacman..."
     sudo pacman -Sy --needed --noconfirm "${ARCH_PACKAGES[@]}" 2>/dev/null || true
 
-    if command -v yay &>/dev/null; then
-        yay -S --needed --noconfirm agsv1 || warn "AGS install failed; install manually."
+    # Install AGS (aylurs-gtk-shell) via AUR helper
+    local helper=""
+    command -v yay  &>/dev/null && helper="yay"
+    command -v paru &>/dev/null && helper="paru"
+
+    if command -v ags &>/dev/null; then
+        info "ags (aylurs-gtk-shell) already installed — skip"
+    elif [[ -n "$helper" ]]; then
+        info "Installing aylurs-gtk-shell via $helper..."
+        "$helper" -S --needed --noconfirm aylurs-gtk-shell 2>/dev/null || \
+            warn "aylurs-gtk-shell install failed — install manually: yay -S aylurs-gtk-shell"
     else
-        warn "yay not found. Install AUR packages manually: agsv1"
+        warn "No AUR helper found. Install AGS manually: yay -S aylurs-gtk-shell"
+        warn "See: https://aylur.github.io/ags-docs/config/installation"
     fi
 }
 

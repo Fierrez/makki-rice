@@ -6,6 +6,10 @@
 # Emits AGS signal after change so island can react.
 # =============================================================================
 
+# shellcheck source=../lib/ags-compat.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../lib/ags-compat.sh"
+
 STEP=5    # Volume step percent
 MAX=150   # Maximum volume percent (allow boost)
 
@@ -21,11 +25,7 @@ get_mute() {
 
 emit_ags_signal() {
     # Notify AGS about volume change (island expands)
-    if command -v agsv1 &>/dev/null; then
-        agsv1 -r "App.getWindow('island') && globalThis.onVolumeChange?.()" 2>/dev/null || true
-    else
-        ags -r "App.getWindow('island') && globalThis.onVolumeChange?.()" 2>/dev/null || true
-    fi
+    ags_run "App.getWindow('island') && globalThis.onVolumeChange?.()"
 }
 
 case "$action" in

@@ -6,16 +6,12 @@
 # Usage: island.sh [volume|brightness|battery|network|media|collapse]
 # =============================================================================
 
+# shellcheck source=../lib/ags-compat.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../lib/ags-compat.sh"
+
 action="${1:-collapse}"
 duration="${2:-3000}"
-
-ags_run() {
-    if command -v agsv1 &>/dev/null; then
-        agsv1 -r "$1" 2>/dev/null || true
-    else
-        ags -r "$1" 2>/dev/null || true
-    fi
-}
 
 case "$action" in
     volume)

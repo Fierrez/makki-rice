@@ -6,6 +6,10 @@
 # Uses wofi by default, falls back to rofi, then AGS launcher.
 # =============================================================================
 
+# shellcheck source=../lib/ags-compat.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../lib/ags-compat.sh"
+
 action="${1:-toggle}"
 
 WOFI_PID=$(pgrep -x wofi || true)
@@ -19,22 +23,14 @@ open_launcher() {
     elif command -v rofi &>/dev/null; then
         rofi -show drun -theme ~/.config/rofi/mocha.rasi &
     else
-        if command -v agsv1 &>/dev/null; then
-            agsv1 -r "App.getWindow('launcher')?.show()" 2>/dev/null || true
-        else
-            ags -r "App.getWindow('launcher')?.show()" 2>/dev/null || true
-        fi
+        ags_run "App.getWindow('launcher')?.show()"
     fi
 }
 
 close_launcher() {
     pkill -x wofi 2>/dev/null || true
     pkill -x rofi 2>/dev/null || true
-    if command -v agsv1 &>/dev/null; then
-        agsv1 -r "App.getWindow('launcher')?.hide()" 2>/dev/null || true
-    else
-        ags -r "App.getWindow('launcher')?.hide()" 2>/dev/null || true
-    fi
+    ags_run "App.getWindow('launcher')?.hide()"
 }
 
 case "$action" in

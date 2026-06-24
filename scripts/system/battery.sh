@@ -6,6 +6,10 @@
 # Watch mode emits AGS signals on critical state changes.
 # =============================================================================
 
+# shellcheck source=../lib/ags-compat.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../lib/ags-compat.sh"
+
 CRITICAL_THRESHOLD=10
 LOW_THRESHOLD=20
 POLL_INTERVAL=30  # seconds
@@ -33,11 +37,7 @@ notify_critical() {
     local pct="$1"
     notify-send -u critical -i battery-empty-symbolic \
         "Battery Critical!" "Battery at ${pct}%. Plug in now." 2>/dev/null || true
-    if command -v agsv1 &>/dev/null; then
-        agsv1 -r "globalThis.onBatteryCritical?.(${pct})" 2>/dev/null || true
-    else
-        ags -r "globalThis.onBatteryCritical?.(${pct})" 2>/dev/null || true
-    fi
+    ags_run "globalThis.onBatteryCritical?.(${pct})"
 }
 
 notify_low() {

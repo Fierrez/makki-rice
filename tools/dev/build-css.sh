@@ -46,11 +46,11 @@ compile() {
 
 # ─── AGS hot-reload ──────────────────────────────────────────────────────────
 ags_reload() {
-    if pgrep -x agsv1 &>/dev/null; then
-        agsv1 -r "App.resetCss?.(); App.applyCss?.(App.configDir + '/style/main.css')" 2>/dev/null && \
-            info "AGS hot-reloaded." || warn "AGS reload failed (non-fatal)"
-    elif pgrep -x ags &>/dev/null; then
+    if pgrep -x ags &>/dev/null; then
         ags -r "App.resetCss?.(); App.applyCss?.(App.configDir + '/style/main.css')" 2>/dev/null && \
+            info "AGS hot-reloaded." || warn "AGS reload failed (non-fatal)"
+    elif pgrep -x agsv1 &>/dev/null; then
+        agsv1 -r "App.resetCss?.(); App.applyCss?.(App.configDir + '/style/main.css')" 2>/dev/null && \
             info "AGS hot-reloaded." || warn "AGS reload failed (non-fatal)"
     fi
 }

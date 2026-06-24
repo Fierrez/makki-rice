@@ -6,6 +6,10 @@
 # Uses brightnessctl. Emits AGS signal.
 # =============================================================================
 
+# shellcheck source=../lib/ags-compat.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../lib/ags-compat.sh"
+
 STEP=5   # Brightness step percent
 
 action="${1:-get}"
@@ -16,11 +20,7 @@ get_brightness() {
 }
 
 emit_ags_signal() {
-    if command -v agsv1 &>/dev/null; then
-        agsv1 -r "globalThis.onBrightnessChange?.()" 2>/dev/null || true
-    else
-        ags -r "globalThis.onBrightnessChange?.()" 2>/dev/null || true
-    fi
+    ags_run "globalThis.onBrightnessChange?.()"
 }
 
 case "$action" in

@@ -5,15 +5,11 @@
 # Usage: dock.sh [show|hide|toggle]
 # =============================================================================
 
-action="${1:-toggle}"
+# shellcheck source=../lib/ags-compat.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../lib/ags-compat.sh"
 
-ags_run() {
-    if command -v agsv1 &>/dev/null; then
-        agsv1 -r "$1" 2>/dev/null || true
-    else
-        ags -r "$1" 2>/dev/null || true
-    fi
-}
+action="${1:-toggle}"
 
 case "$action" in
     show)    ags_run "globalThis.dockShow?.()" ;;

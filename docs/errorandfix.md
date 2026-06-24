@@ -126,7 +126,7 @@ Furthermore, `agsv1` is packaged separately in the Arch User Repository (AUR) an
 - `tools/debug/health-check.sh`
 
 ### Fix / Resolution
-1. **Dependency Update**: Changed the AUR package in `packages.sh` and `install.sh` from `aylurs-gtk-shell` to `agsv1`. Removed the fake `ags` package reference from pacman's `ARCH_PACKAGES` list.
+1. **Dependency Update**: Removed the fake `ags` package reference from pacman's `ARCH_PACKAGES` list. Since the `agsv1` package is not indexed on the official AUR registry, the installer scripts (`packages.sh` and `install.sh`) have been enhanced to automatically clone the community PKGBUILD repository (`https://github.com/kotontrion/PKGBUILDS`) and build `agsv1` locally using `makepkg` if it's not already installed.
 2. **Transparent Binary Fallback**: Modified all script references and tools to look up the `agsv1` binary first, and fall back to `ags` if it's not present (allowing users who manually compiled or custom-aliased AGS v1 to still boot the rice).
 3. **Process / Signal Handling**: Updated process queries (`pgrep` / `pkill`) to check for both `agsv1` and `ags` daemons during UI restart, CSS reload, and health verification checks.
 

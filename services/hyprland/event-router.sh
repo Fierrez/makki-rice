@@ -99,10 +99,10 @@ dedupe() {
 # Fire-and-forget AGS JS evaluation. Never blocks or fails the router.
 ags_signal() {
     local js="$1"
-    if command -v agsv1 &>/dev/null; then
-        agsv1 -r "$js" 2>/dev/null &
-    else
+    if command -v ags &>/dev/null; then
         ags -r "$js" 2>/dev/null &
+    elif command -v agsv1 &>/dev/null; then
+        agsv1 -r "$js" 2>/dev/null &
     fi
 }
 

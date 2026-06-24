@@ -4,12 +4,12 @@
 // Triggered via keybind. Shows app search with fuzzy matching.
 // =============================================================================
 
-import { Widget, Utils, App, Service, Variable } from "resource:///com/github/Aylur/ags/imports.js";
+import { Widget, Utils, App, Variable } from "resource:///com/github/Aylur/ags/imports.js";
+import Applications from "resource:///com/github/Aylur/ags/service/applications.js";
 
 const { Box, Entry, Label, Button, Window, Scrollable, Icon } = Widget;
 
 const MAX_RESULTS = 8;
-const applications = await Service.import("applications");
 
 const LauncherItem = (app) => Button({
     className: "launcher-item",
@@ -31,7 +31,7 @@ export default () => {
 
     const search = (q) => {
         if (!q) { results.value = []; return; }
-        results.value = applications.query(q).slice(0, MAX_RESULTS);
+        results.value = Applications.query(q).slice(0, MAX_RESULTS);
     };
 
     return Window({

@@ -55,7 +55,7 @@ ARCH_FONTS=(
 )
 
 AUR_PACKAGES=(
-    agsv1
+    aylurs-gtk-shell        # AGS — latest (aylur.github.io/ags-docs)
     catppuccin-gtk-theme-mocha
     bibata-cursor-theme
     papirus-icon-theme
@@ -165,7 +165,7 @@ install_arch() {
     pacman_install "${ARCH_UTILS[@]}"
     pacman_install "${ARCH_FONTS[@]}"
 
-    info "Installing AUR packages..."
+    info "Installing AUR packages (includes aylurs-gtk-shell / AGS)..."
     aur_install "${AUR_PACKAGES[@]}"
 
     info "Arch installation complete."

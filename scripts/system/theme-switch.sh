@@ -12,6 +12,10 @@
 
 set -uo pipefail
 
+# shellcheck source=../lib/ags-compat.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../lib/ags-compat.sh"
+
 RICE_DIR="${HOME}/.config/makki-rice"
 THEMES_DIR="$RICE_DIR/config/themes"
 SCSS_VARS="$RICE_DIR/ui-engine/ags/style/variables.scss"
@@ -128,11 +132,8 @@ EOF
     fi
 
     # ── Hot-reload AGS ────────────────────────────────────────────────
-    if pgrep -x agsv1 &>/dev/null; then
-        agsv1 -r "App.resetCss(); App.applyCss(App.configDir + '/style/main.css')" 2>/dev/null && \
-            info "AGS hot-reloaded." || warn "AGS reload failed"
-    elif pgrep -x ags &>/dev/null; then
-        ags -r "App.resetCss(); App.applyCss(App.configDir + '/style/main.css')" 2>/dev/null && \
+    if ags_pgrep; then
+        ags_run "App.resetCss(); App.applyCss(App.configDir + '/style/main.css')" && \
             info "AGS hot-reloaded." || warn "AGS reload failed"
     fi
 
