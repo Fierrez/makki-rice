@@ -54,13 +54,13 @@ echo -e "${RESET}"
 
 # ─── Core Dependencies ───────────────────────────────────────────────────────
 section "Core Dependencies"
-check_cmd hyprland   "Hyprland"
+check_cmd Hyprland   "Hyprland"
 if command -v ags &>/dev/null; then
     pass "AGS (aylurs-gtk-shell) installed — binary: ags"
 elif command -v agsv1 &>/dev/null; then
-    warn "AGS found as legacy 'agsv1' — upgrade: yay -S aylurs-gtk-shell"
+    warn "AGS found as legacy 'agsv1' — upgrade: yay -S aylurs-gtk-shell-git"
 else
-    fail "AGS NOT FOUND — install: yay -S aylurs-gtk-shell"
+    fail "AGS NOT FOUND — install: yay -S aylurs-gtk-shell-git"
 fi
 check_cmd swaync     "swaync"
 check_cmd wofi       "wofi"
@@ -86,7 +86,7 @@ check_symlink "$HOME/.config/makki-rice" "rice self-reference"
 # ─── Key Config Files ────────────────────────────────────────────────────────
 section "Key Config Files"
 check_file "$HOME/.config/hypr/hyprland.conf"   "hyprland.conf"
-check_file "$HOME/.config/ags/config.js"        "ags/config.js"
+check_file "$HOME/.config/ags/app.ts"           "ags/app.ts"
 check_file "$HOME/.config/ags/style/main.css"   "ags/style/main.css (compiled)" || \
     warn "Run: bash tools/dev/build-css.sh"
 

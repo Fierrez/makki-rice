@@ -35,24 +35,49 @@ update_rice() {
     info "Starting update..."
     cd "$RICE_DIR"
     
-    # 1. Fetch and pull changes
-    info "Fetching latest changes from GitHub..."
-    if ! git pull; then
-        warn "Git pull failed. Attempting to force update or reset..."
-        git fetch --all
-        git reset --hard origin/$(git branch --show-current)
+    # 1. Identify current branch name
+    local branch
+    branch=$(git branch --show-current 2>/dev/null || echo "main")
+    
+    # 2. Check for local modifications and stash if needed
+    local stashed=false
+    if ! git diff --quiet || ! git diff --cached --quiet; then
+        info "Stashing local changes to prevent conflicts..."
+        git stash -u
+        stashed=true
     fi
     
-    # 2. Run bootstrap
+    # 3. Fetch from public HTTPS repo to guarantee success without authentication prompt
+    info "Fetching latest changes from GitHub (https://github.com/Fierrez/makki-rice)..."
+    if ! git fetch https://github.com/Fierrez/makki-rice.git "$branch"; then
+        error "Failed to fetch updates from GitHub."
+    fi
+    
+    # 4. Merge changes or fall back to hard reset
+    info "Applying updates..."
+    if ! git merge FETCH_HEAD -m "Auto-merge updates via makki-rice --update" 2>/dev/null; then
+        warn "Auto-merge failed. Force resetting local branch to match remote..."
+        git reset --hard FETCH_HEAD
+    fi
+    
+    # 5. Restore stashed local changes if they existed
+    if [[ "$stashed" == "true" ]]; then
+        info "Restoring your local changes..."
+        if ! git stash pop; then
+            warn "Conflicts detected when applying local changes. Your changes are saved in the git stash."
+        fi
+    fi
+    
+    # 6. Run bootstrap
     info "Running bootstrap..."
     bash bootstrap.sh
     
-    # 3. Reload Hyprland & AGS
+    # 7. Reload Hyprland & AGS
     info "Reloading session..."
     hyprctl reload || true
     pkill -x ags || true
     sleep 0.5
-    ags run &
+    ags run &>/dev/null & disown
     
     info "Update complete! 🌿"
 }
@@ -73,7 +98,7 @@ case "${1:-}" in
     --restart|-r)
         pkill -x ags || true
         sleep 0.5
-        ags run &
+        ags run &>/dev/null & disown
         info "AGS daemon restarted."
         ;;
     --help|-h|"")
