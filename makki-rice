@@ -72,12 +72,14 @@ update_rice() {
     info "Running bootstrap..."
     bash bootstrap.sh
     
-    # 7. Reload Hyprland & AGS
+    # 7. Reload AGS & Hyprland
     info "Reloading session..."
-    hyprctl reload || true
     pkill -x ags || true
     sleep 0.5
     ags run &>/dev/null & disown
+    sleep 0.5
+    info "Reloading Hyprland config..."
+    hyprctl reload || true
     
     info "Update complete! 🌿"
 }
